@@ -20,7 +20,7 @@ server.get('/', (req, res) => {
 })
 
 // RUNNING UNDER http://localhost:4000/login and /register
-server.use('/api/auth', authRouter)
+server.use('/auth', authRouter)
 
 module.exports = server;
 
