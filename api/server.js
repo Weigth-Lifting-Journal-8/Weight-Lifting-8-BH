@@ -5,7 +5,7 @@ const helmet = require('helmet');
 
 
 // IMPORT AUTH
-
+const authRouter = require('../routers/users-router.js');
 
 // SETTING UP SERVER
 const server = express();
@@ -19,5 +19,8 @@ server.get('/', (req, res) => {
     res.status(200).json('Server is running!')
 })
 
-server.us
+// RUNNING UNDER http://localhost:4000/login and /register
+server.use('/api/auth', authRouter)
+
+module.exports = server;
 
