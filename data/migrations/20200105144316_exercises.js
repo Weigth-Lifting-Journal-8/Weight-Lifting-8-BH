@@ -2,9 +2,8 @@
 exports.up = function(knex) {
     return knex.schema.createTable('exercises', tbl => {
         tbl.increments();
-  
-        tbl.string('exercise', 255).notNullable();
         
+        tbl.integer('exercise', 255).notNullable();
         tbl.integer('weight', 255).notNullable();
 
         tbl.string('units', 128)
@@ -22,8 +21,7 @@ exports.up = function(knex) {
             .inTable('workout')
             .onDelete('RESTRICT')
             .onUpdate('CASCADE');
-    })
-  };
+    })};
   
   exports.down = function(knex) {
     return knex.schema.dropTableIfExists('exercises');

@@ -4,6 +4,7 @@ exports.up = function(knex) {
         tbl.increments();
   
         tbl.date('date', 128)
+            .notNullable()
             .defaultTo(knex.fn.now());
         
         tbl.string('workout_name', 255).notNullable();

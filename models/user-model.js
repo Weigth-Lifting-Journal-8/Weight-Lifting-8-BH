@@ -6,8 +6,8 @@ module.exports = {
     getWorkoutById,
     getUserById,
     addWorkout,
-    // update,
-    // remove
+    update,
+    remove
 }
 
 // FINDS ALL USERS
@@ -23,7 +23,7 @@ function getUserById(id){
 // FINDS A WORKOUT
 function findWorkout(userId){
     return db("workout as w")
-        .select("u.firstName", "w.workout_name", "w.date")
+        .select("w.id", "u.firstName", "w.workout_name", "w.date")
         .join("users as u", "w.user_id", "=", "u.id")
         .where("w.user_id", userId)
 }
@@ -40,8 +40,24 @@ function addWorkout(data){
 }
 
 // GETS WORKOUT BY ID
-function getWorkoutById(id){
+function getWorkoutById(workout){
+    return db('workout')
+        .select('id','workout_name', 'date')
+        .where('id', workout)
+};
+
+
+// EDITS WORKOUT
+function update(id, changes){
     return db('workout')
         .where('id', id)
-        .first()
+        .update(changes)
+        .then(count => (count > 0 ? getWorkoutById(id) : null))
+}
+
+// REMOVES WORKOUT
+function remove(id){
+    return db('workout')
+        .where({id})
+        .delete()
 }
