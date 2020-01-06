@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 })
 
 // GET USER BY ID
-router.get('/:id', (req, res) => {
+router.get('/:id', middleware, (req, res) => {
     const id = req.params.id;
 
     UserModel.getUserById(id)
