@@ -23,7 +23,7 @@ function getUserById(id){
 // FINDS A WORKOUT & PROVIDES NAME
 function findWorkout(userId){
     return db("workout as w")
-        .select("w.id","u.firstName", "w.workout_name", "w.date")
+        .select("w.id", "u.firstName", "w.workout_name", "w.date")
         .join("users as u", "w.user_id", "=", "u.id")
         .where("w.user_id", userId)
 }
@@ -40,10 +40,10 @@ function addWorkout(data){
 }
 
 // GETS WORKOUT BY ID
-function getWorkoutById(id){
+function getWorkoutById(workout){
     return db('workout')
-        .where('id', id)
-        .first()
+        .select('id','workout_name', 'date')
+        .where('id', workout)
 };
 
 // REMOVES WORKOUT
