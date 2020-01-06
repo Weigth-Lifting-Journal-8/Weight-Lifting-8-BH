@@ -64,7 +64,6 @@ router.get('/workouts/:workout', middleware, (req, res) => {
         })
 })
 
-
 // POST WORKOUT, Adds new workout, 
     // generates new user_id for workout, 
     // date (optional)
@@ -75,6 +74,8 @@ router.post('/:id/workouts', middleware, (req, res) => {
 
     if(!newWorkout.workout_name){
         res.status(400).json({ message: "Workout needs a name."})
+    } else if (!newWorkout.date){
+        res.status(400).json({ message: "Workout needs a date."})
     } else {
         UserModel.addWorkout(newWorkout)
             .then(workout => {
