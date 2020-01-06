@@ -46,6 +46,21 @@ router.get('/:id/workouts', validateUserId, (req, res) => {
         })
 })
 
+// GETS INDIVIDUAL WORKOUT
+router.get('/workouts/:id', validateUserId, (req, res) => {
+    const id = req.params.id;
+
+    UserModel.getWorkoutById(id)
+        .then(workout => {
+            res.status(200).json(workout)
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Problem receiving user.'})
+        })
+})
+
+
+
 // POST WORKOUT, Adds new workout, 
     // generates new user_id for workout, 
     // date (optional)
