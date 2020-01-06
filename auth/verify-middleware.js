@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
 
 
     if (token) {
-      const secret = process.env.JWT_SECRET || "This is a secret";
+      const secret = process.env.JWT_SECRET || "Lift";
       jwt.verify(token, secret, function(err, decodedToken) {
         if (err) {
           res.status(401).json({ message: 'Invalid token.' });

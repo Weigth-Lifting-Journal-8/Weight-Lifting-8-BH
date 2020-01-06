@@ -5,11 +5,10 @@ const helmet = require('helmet');
 
 
 // IMPORT AUTH
-const middleware = require('../auth/verify-middleware');
 const authRouter = require('../routers/users-router.js');
 
 // IMPORT ROUTERS
-const userRouter = require('../routers/user-workout.js');
+const userRouter = require('../routers/workout-router.js');
 
 // SETTING UP SERVER
 const server = express();
@@ -19,8 +18,9 @@ server.use(cors());
 server.use(express.json());
 
 // RUNNING UNDER http://localhost:4000/login and /register
-server.use('/auth', authRouter)
-server.use('/user', userRouter)
+server.use('/auth', authRouter);
+server.use('/user', userRouter);
+// server.use('/exercises')
 
 // SET UP BASIC ENDPOINTS
 server.get('/', (req, res) => {

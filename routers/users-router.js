@@ -53,7 +53,7 @@ function makeToken(user){
     email: user.email,
     password: user.password,
   }
-  const secret = process.env.JWT_SECRET || "This is a secret"
+  const secret = process.env.JWT_SECRET || "Lift";
 
   const options = {
     expiresIn: "1h"
