@@ -47,18 +47,21 @@ router.get('/:id/workouts', validateUserId, (req, res) => {
 })
 
 // GETS INDIVIDUAL WORKOUT
-router.get('/workouts/:id', validateUserId, (req, res) => {
+router.get('/workouts/:id', (req, res) => {
     const id = req.params.id;
 
     UserModel.getWorkoutById(id)
         .then(workout => {
-            res.status(200).json(workout)
+            if(!workout){
+                res.status(404).json({ message: "There is no workout by this id "})
+            } else {
+                res.status(200).json(workout)
+            }
         })
         .catch(err => {
-            res.status(500).json({ message: 'Problem receiving user.'})
+            res.status(500).json({ message: 'Problem receiving workout.'})
         })
 })
-
 
 
 // POST WORKOUT, Adds new workout, 
@@ -80,6 +83,25 @@ router.post('/:id/workouts', validateUserId, (req, res) => {
             res.status(500).json({ message: 'Problem posting workout.'})
         })
 }})
+
+
+// DELETES INDIVIDUAL WORKOUT
+router.delete('/workouts/:id', validateUserId, (req, res) => {
+    const id = req.params.id;
+
+    UserModel.remove(id)
+        .then(deleted => {
+            if(deleted){
+                res.status(202).json({ message: "Workout Deleted."})
+            } else {
+                res.status(404).json({ message: "Couldn't find workout with this id."})
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Problem deleting workout.'})
+        })
+})
+
 
 // MIDDLEWARE
 function validateUserId(req, res, next) {
