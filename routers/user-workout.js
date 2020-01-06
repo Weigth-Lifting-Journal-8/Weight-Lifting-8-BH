@@ -33,6 +33,7 @@ router.get('/:id', (req, res) => {
 })
 
 // GET USER WORKOUTS
+// GIVES FIRST NAME, WORKOUT_NAME, AND DATE
 router.get('/:id/workouts', validateUserId, (req, res) => {
     const id = req.params.id;
 
@@ -46,25 +47,24 @@ router.get('/:id/workouts', validateUserId, (req, res) => {
 })
 
 // POST WORKOUT, Adds new workout, 
-    // generates new id for workout, 
+    // generates new user_id for workout, 
     // date (optional)
     // workout title required
-router.post('/:id/workouts', (req, res) => {
-    const id = req.params.id;
+router.post('/:id/workouts', validateUserId, (req, res) => {
     const newWorkout = req.body;
+    newWorkout.user_id = req.params.id;
 
+    if(!newWorkout.workout_name){
+        res.status(400).json({ message: "Workout needs a name."})
+    } else {
     UserModel.addWorkout(newWorkout)
         .then(workout => {
-            if(!workout.workout_name){
-                res.status(404).json({ message: "Workout needs a name."})
-            } else {
                 res.status(201).json(workout)
-            }
         })
         .catch(err => {
             res.status(500).json({ message: 'Problem posting workout.'})
         })
-})
+}})
 
 // MIDDLEWARE
 function validateUserId(req, res, next) {

@@ -3,7 +3,7 @@ const db = require('../data/dbConfig.js');
 module.exports = {
     getAll,
     findWorkout,
-    // getWorkoutById,
+    getWorkoutById,
     getUserById,
     addWorkout,
     // update,
@@ -22,11 +22,6 @@ function getUserById(id){
 
 // FINDS A WORKOUT
 function findWorkout(userId){
-    // SELECT u.firstName as Name
-    // , w.workout_name
-    // , w.date
-    // FROM workout as w
-    //     Join users as u ON w.user_id = u.id;
     return db("workout as w")
         .select("u.firstName", "w.workout_name", "w.date")
         .join("users as u", "w.user_id", "=", "u.id")
@@ -36,13 +31,17 @@ function findWorkout(userId){
 // POSTS NEW WORKOUT
 function addWorkout(data){
     return db('workout')
-        .insert(data)
-        .then(([id]) => findWorkout(id));
+        .insert(data, "id")
+        .then(ids => {
+            const [id] = ids;
+
+            return getWorkoutById(id);
+        });
 }
 
 // GETS WORKOUT BY ID
-// function getWorkoutById(id){
-//     return db('workout')
-//         .where('id', id)
-//         .first()
-// }
+function getWorkoutById(id){
+    return db('workout')
+        .where('id', id)
+        .first()
+}
