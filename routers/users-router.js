@@ -14,6 +14,7 @@ router.post('/register', (req, res) => {
   Users.addUser(user)
     .then(user => {
       res.status(201).json({
+          id: user.id,
           email: user.email,
           password: user.password,
           firstName: user.firstName,

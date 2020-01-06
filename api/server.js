@@ -18,8 +18,8 @@ server.use(cors());
 server.use(express.json());
 
 // RUNNING UNDER http://localhost:4000/login and /register
-server.use('/auth', authRouter);
-server.use('/user', userRouter);
+server.use('/api/auth', authRouter);
+server.use('/api/user', userRouter);
 // server.use('/exercises')
 
 // SET UP BASIC ENDPOINTS
