@@ -22,8 +22,7 @@ router.post('/register', (req, res) => {
     })
     .catch(err => {
       res.status(400).json({ Error: `Bad request: ${err}`});
-});
-
+    });
 });
 
 router.post('/login', (req, res) => {
