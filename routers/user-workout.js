@@ -6,7 +6,7 @@ const UserModel = require('../models/user-model.js');
 
 // GETS ALL USERS
 router.get('/', (req, res) => {
-    UserModel.find()
+    UserModel.getAll()
         .then(user => {
             res.json(user)
         })
@@ -14,16 +14,69 @@ router.get('/', (req, res) => {
             res.status(500).json({ message: 'Failed to load users'})
         })
 })
+
 // GET USER BY ID
-router.get('/', (req, res) => {
-    UserModel.find()
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
+
+    UserModel.getUserById(id)
         .then(user => {
-            res.json(user)
+            if(!user){
+                res.status(404).json({ message: "Could not find id."})
+            } else {
+                res.json(user)
+            }      
         })
         .catch(err => {
-            res.status(500).json({ message: 'Failed to load users'})
+            res.status(500).json({ message: 'Problem receiving user.'})
         })
 })
 
+// GET USER WORKOUTS
+router.get('/:id/workouts', validateUserId, (req, res) => {
+    const id = req.params.id;
 
+    UserModel.findWorkout(id)
+        .then(workout => {
+            res.status(200).json(workout)
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Problem receiving user.'})
+        })
+})
+
+// POST WORKOUT, Adds new workout, 
+    // generates new id for workout, 
+    // date (optional)
+    // workout title required
+router.post('/:id/workouts', (req, res) => {
+    const id = req.params.id;
+    const newWorkout = req.body;
+
+    UserModel.addWorkout(newWorkout)
+        .then(workout => {
+            if(!workout.workout_name){
+                res.status(404).json({ message: "Workout needs a name."})
+            } else {
+                res.status(201).json(workout)
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Problem posting workout.'})
+        })
+})
+
+// MIDDLEWARE
+function validateUserId(req, res, next) {
+    const id = req.params.id;
+ 
+    UserModel.getUserById(id)
+       .then(user => {
+          if (!user) {
+             res.status(404).json({ message: 'There is no such user by that id' });
+          } else {
+             next();
+          }
+       });
+ }
 module.exports = router;
