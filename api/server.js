@@ -8,6 +8,9 @@ const helmet = require('helmet');
 const middleware = require('../auth/verify-middleware');
 const authRouter = require('../routers/users-router.js');
 
+// IMPORT ROUTERS
+const userRouter = require('../routers/users-router.js');
+
 // SETTING UP SERVER
 const server = express();
 
@@ -22,7 +25,7 @@ server.get('/', (req, res) => {
 
 // RUNNING UNDER http://localhost:4000/login and /register
 server.use('/auth', authRouter)
-server.use('/user', middleware)
+server.use('/user', userRouter)
 
 module.exports = server;
 
