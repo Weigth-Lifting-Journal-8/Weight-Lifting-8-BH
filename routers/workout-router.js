@@ -4,6 +4,7 @@ const UserModel = require('../models/user-model.js');
 const middleware = require('../auth/verify-middleware.js');
 
 
+
 // GETS ALL USERS
 router.get('/', (req, res) => {
     UserModel.getAll()
@@ -34,31 +35,34 @@ router.get('/:id', middleware, (req, res) => {
 
 // GET USER WORKOUTS
 // GIVES FIRST NAME, WORKOUT_NAME, AND DATE
-router.get('/:id/workouts', middleware, (req, res) => {
-    const id = req.params.id;
+router.get('/:userId/all', validateUserId, middleware, (req, res) => {
+    const {userId} = req.params;
 
-    UserModel.findWorkout(id)
+    console.log(req.params)
+    UserModel.findWorkout(userId)
         .then(workout => {
             res.status(200).json(workout)
         })
         .catch(err => {
-            res.status(500).json({ message: 'Problem receiving user.'})
+            res.status(500).json({ message: 'Problem receiving workouts.'})
         })
 })
 
 // GETS INDIVIDUAL WORKOUT
     // Provides ID, workout_name, date
-router.get('/workouts/:workout', middleware, (req, res) => {
+router.get('/:userId/:workout', validateUserId, middleware, (req, res) => {
     const { workout } = req.params;
+    // const { userId } = req.params;
+
     console.log(req.params)
 
     UserModel.getWorkoutById(workout)
         .then(exercise => {
-            // if(!workout){
-            //     res.status(404).json({ message: "There is no workout by this id "})
-            // } else {
+            if(workout[0].length == 0){
+                res.status(404).json({ message: "There is no workout by this id "})
+            } else {
                 res.status(200).json(exercise)
-        })
+        }})
         .catch(err => {
             res.status(500).json({ message: 'Problem receiving workout.'})
         })
@@ -66,11 +70,12 @@ router.get('/workouts/:workout', middleware, (req, res) => {
 
 // POST WORKOUT, Adds new workout, 
     // generates new user_id for workout, 
-    // date (optional)
+    // date
     // workout title required
-router.post('/:id/workouts', middleware, (req, res) => {
+router.post('/:id', middleware, (req, res) => {
     const newWorkout = req.body;
     newWorkout.user_id = req.params.id;
+
 
     if(!newWorkout.workout_name){
         res.status(400).json({ message: "Workout needs a name."})
@@ -130,16 +135,16 @@ router.delete('/:id', middleware, (req, res) => {
 
 
 // MIDDLEWARE FOR VALIDATING USER ID ------>>>> MAY NOT NEED
-// function validateUserId(req, res, next) {
-//     const id = req.params.id;
+function validateUserId(req, res, next) {
+    const id = req.params.userId;
  
-//     UserModel.getUserById(id)
-//        .then(user => {
-//           if (!user) {
-//              res.status(404).json({ message: 'There is no such user by that id' });
-//           } else {
-//              next();
-//           }
-//        });
-//  }
+    UserModel.getUserById(id)
+       .then(user => {
+          if (!user) {
+             res.status(404).json({ message: 'There is no such user by that id' });
+          } else {
+             next();
+          }
+       });
+ }
 module.exports = router;
