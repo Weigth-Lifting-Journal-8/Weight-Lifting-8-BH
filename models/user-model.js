@@ -20,7 +20,7 @@ function getUserById(id){
     return db('users').where({ id }).first();
 }
 
-// FINDS A WORKOUT
+// FINDS ALL USER WORKOUTS
 function findWorkout(userId){
     return db("workout as w")
         .select("w.id", "u.firstName", "w.workout_name", "w.date")

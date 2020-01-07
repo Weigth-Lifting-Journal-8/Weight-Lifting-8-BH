@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const UserModel = require('../models/user-model.js');
 const middleware = require('../auth/verify-middleware.js');
-
+const validateUserId = require('../auth/validate.js');
 
 
 // GETS ALL USERS
@@ -54,11 +54,11 @@ router.get('/:userId/:workout', validateUserId, middleware, (req, res) => {
     const { workout } = req.params;
     // const { userId } = req.params;
 
-    console.log(req.params)
+    // console.log(req.params)
 
     UserModel.getWorkoutById(workout)
         .then(exercise => {
-            if(workout[0].length == 0){
+            if(exercise.length === 0){
                 res.status(404).json({ message: "There is no workout by this id "})
             } else {
                 res.status(200).json(exercise)
@@ -120,6 +120,7 @@ router.put('/:id', middleware, (req, res) => {
 router.delete('/:id', middleware, (req, res) => {
     const id = req.params.id;
 
+    console.log(req.params)
     UserModel.remove(id)
         .then(count => {
             if(count > 0){
@@ -134,17 +135,4 @@ router.delete('/:id', middleware, (req, res) => {
 })
 
 
-// MIDDLEWARE FOR VALIDATING USER ID ------>>>> MAY NOT NEED
-function validateUserId(req, res, next) {
-    const id = req.params.userId;
- 
-    UserModel.getUserById(id)
-       .then(user => {
-          if (!user) {
-             res.status(404).json({ message: 'There is no such user by that id' });
-          } else {
-             next();
-          }
-       });
- }
 module.exports = router;
