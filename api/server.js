@@ -8,7 +8,8 @@ const helmet = require('helmet');
 const authRouter = require('../routers/users-router.js');
 
 // IMPORT ROUTERS
-const userRouter = require('../routers/workout-router.js');
+const workoutRouter = require('../routers/workout-router.js');
+const exerciseRouter = require('../routers/exercise-router.js');
 
 // SETTING UP SERVER
 const server = express();
@@ -19,8 +20,8 @@ server.use(express.json());
 
 // RUNNING UNDER http://localhost:4000/login and /register
 server.use('/api/auth', authRouter);
-server.use('/api/workouts', userRouter);
-// server.use('/exercises')
+server.use('/api/workouts', workoutRouter);
+server.use('/api/exercises', exerciseRouter);
 
 // SET UP BASIC ENDPOINTS
 server.get('/', (req, res) => {
