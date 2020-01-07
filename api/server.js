@@ -19,7 +19,7 @@ server.use(express.json());
 
 // RUNNING UNDER http://localhost:4000/login and /register
 server.use('/api/auth', authRouter);
-server.use('/api/user', userRouter);
+server.use('/api/workouts', userRouter);
 // server.use('/exercises')
 
 // SET UP BASIC ENDPOINTS
