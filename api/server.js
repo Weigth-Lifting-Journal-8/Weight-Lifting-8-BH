@@ -4,7 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 
-// IMPORT AUTH
+// IMPORT AUTH ROUTER
 const authRouter = require('../routers/users-router.js');
 
 // IMPORT ROUTERS
@@ -19,9 +19,9 @@ server.use(cors());
 server.use(express.json());
 
 // RUNNING UNDER http://localhost:4000/login and /register
-server.use('/api/auth', authRouter);
-server.use('/api/workouts', workoutRouter);
-server.use('/api/exercises', exerciseRouter);
+server.use('/api/auth', authRouter); // -----> AUTHENTICATION
+server.use('/api/workouts', workoutRouter); // -----> WORKOUT JOURNAL
+server.use('/api/exercises', exerciseRouter); // -----> EXERCISES IN JOURNAL
 
 // SET UP BASIC ENDPOINTS
 server.get('/', (req, res) => {

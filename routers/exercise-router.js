@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-
+// IMPORT MODELS/MIDDLEWARE
 const ExModel = require('../models/exercise-model.js');
 const middleware = require('../auth/verify-middleware.js');
 const validateUserId = require('../auth/validate.js');
@@ -52,6 +52,23 @@ router.get('/:userId/:id', validateUserId, middleware, (req, res) => {
             res.status(500).json({ message: 'Problem receiving exercise.'})
         })
 });
+//    ||////////////////////////////////////////////////////||
+//    ||------------------TEST ENDPOINT---------------------||
+//    ||////////////////////////////////////////////////////||
+//       GETS A LIST OF EXERCISES BY SPECIFIC USER WORKOUT
+router.get('/region/:userId/:region', middleware, (req, res) => {
+    const { region } = req.params;
+    
+    console.log(req.params);
+
+    ExModel.region(region)
+        .then(exercise => {
+                res.status(200).json({ exercise })
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Problem receiving exercise.'})
+        })
+});
 
 // POSTS EXERCISE UNDER WORKOUT
 router.post('/:workout_id', middleware, (req, res) => {
@@ -69,11 +86,11 @@ router.post('/:workout_id', middleware, (req, res) => {
     } else {
         ExModel.addExercise(newExercise)
             .then(workout => {
-                    res.status(201).json({workout, message: `Successfully added ${workout.exercise}`})
+                    res.status(201).json({workout, message: `Successfully added ${workout.exercise} to ${workout.workout_name}`})
             })
             .catch(err => {
                 console.log(err)
-                res.status(500).json({ message: 'Problem posting workout.'})
+                res.status(500).json({ err, message: 'Problem posting workout.'})
             })
 }});
 
