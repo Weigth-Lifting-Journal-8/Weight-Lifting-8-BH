@@ -6,17 +6,11 @@ module.exports = {
     exercisesInWO,
     addExercise,
     updateEx,
-    removeEx
-}
+    removeEx,
 
-// FINDS Exercises under workout
-// SELECT w.workout_name
-//     , e.exercise
-//     , e.weight
-//     , e.sets
-//     , e.reps
-// FROM exercises as e
-// Join workout as w ON e.workout_id = w.id;
+    region,
+    byId
+}
 
 // FINDS ALL Exercises w/ Body Part
 function getAllExercises(){
@@ -25,12 +19,30 @@ function getAllExercises(){
         .join("workout as w", "e.workout_id", "=", "w.id");
 };
 
-// FINDS BY ID
+// FINDS BY ID ----> Gives back specific workoutname for id
 function exerciseById(id){
-    return db('exercises')
-        .where({ id })
+    return db('exercises as e')
+        .select("e.id", "w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
+        .join("workout as w", "e.workout_id", "=", "w.id")
+        .where('e.id', id)
         .first()
+}
 
+// ORIGINAL EXERCISE BY ID -----> Backup == Just in case
+function byId(id){
+    return db('exercises as e')
+        .select("e.id", "w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
+        .join("workout as w", "e.workout_id", "=", "w.id")
+        .where('e.workout_id', id)
+        .first()
+}
+
+// FIND BY BODY PART -----> TEST
+function region(region){
+    return db('exercises as e')
+        .select("w.workout_name", "e.exercise")
+        .join("workout as w", "e.workout_id", "=", "w.id")
+        .where("w.workout_name", region);
 }
 
 // FINDS EXERCISES FOR USER
@@ -38,7 +50,7 @@ function exercisesInWO(workoutId){
     return db("exercises as e")
         .select("e.id","w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
         .join("workout as w", "e.workout_id", "=", "w.id")
-        .where("e.workout_id", workoutId);
+        .where("w.workout_name", workoutId);
 }
 
 // POSTS NEW EXERCISE
