@@ -36,7 +36,7 @@ function exerciseById(id){
 // FINDS EXERCISES FOR USER
 function exercisesInWO(workoutId){
     return db("exercises as e")
-        .select("w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
+        .select("e.id","w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
         .join("workout as w", "e.workout_id", "=", "w.id")
         .where("e.workout_id", workoutId);
 }
