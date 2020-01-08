@@ -40,6 +40,8 @@ This document contains three main routers: `users-router`, `workout-router`, and
 
 ``Request Type`` will let you know which type of request is needed to access the specific end point.
 
+``Requirements`` are exactly what is needed for the end point to work.
+
 
 # **Users-Router**
 
@@ -50,7 +52,8 @@ This document contains three main routers: `users-router`, `workout-router`, and
 
 **Requirements**:
     email, password, firstName, & lastName
- 
+    
+    JSON REQUIREMENTS
 
     {
         email: 'test@email.com', 
@@ -58,17 +61,25 @@ This document contains three main routers: `users-router`, `workout-router`, and
         firstName: 'Paul', 
         lastName: 'Blart'
     }
-1. At the end of ``localhost
+## **Login**
+**End Point**: ``/auth/login``
 
-### **Login**
+**Request Type**: ``POST``
+
+**Requirements**:
+    email, password
+ 
+
+    {
+        email: 'test@email.com', 
+        password: 'password', 
+    }
+
+1. Returns a token that will expire in 1 hour and will require you to login again.
+
+
     
-End Point
 
-/auth/login
--- Login Route Requires an email and password
--- Creates token, it will last an hour and require you to login again
-
-<br><br>
 
 
 
