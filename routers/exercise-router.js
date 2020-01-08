@@ -6,7 +6,7 @@ const middleware = require('../auth/verify-middleware.js');
 const validateUserId = require('../auth/validate.js');
 
 
-// GETS ALL EXERCISES INCLUDING BODYPART/REGIION
+// GETS ALL EXERCISES INCLUDING BODYPART/REGION
 router.get('/', middleware, (req, res) => {
     ExModel.getAllExercises()
         .then(movement => {
@@ -39,7 +39,6 @@ router.get('/:userId/:id', validateUserId, middleware, (req, res) => {
     const { id } = req.params;
     const { userId } = req.params;
 
-    console.log(req.params)
     ExModel.exercisesInWO(id, userId)
         .then(exercise => {
             console.log(exercise)
