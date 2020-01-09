@@ -1,3 +1,4 @@
+  
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
@@ -15,7 +16,8 @@ exports.seed = function(knex) {
         { exercise: 'Incline DB', weight: 135, units: 'lbs', sets: 3, reps: 8, workout_id: 3 },
         { exercise: 'DB Fly', weight: 135, units: 'lbs', sets: 3, reps: 8, workout_id: 3 },
         { exercise: 'Pushups', weight: 135, units: 'lbs', sets: 3, reps: 8, workout_id: 3 },
+        { exercise: 'Arnolds', weight: 135, units: 'lbs', sets: 3, reps: 8, workout_id: 4 },
+        { exercise: 'Jumping Jacks', weight: 0, units: 'lbs', sets: 3, reps: 8, workout_id: 5 },
       ]);
     });
 };
-
