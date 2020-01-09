@@ -8,8 +8,8 @@ module.exports = {
     updateEx,
     removeEx,
 
-    region,
-    byId
+    // region,
+    // byId
 }
 
 // FINDS ALL Exercises w/ Body Part
@@ -29,21 +29,21 @@ function exerciseById(id){
 }
 
 // ORIGINAL EXERCISE BY ID -----> Backup == Just in case
-function byId(id){
-    return db('exercises as e')
-        .select("e.id", "w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
-        .join("workout as w", "e.workout_id", "=", "w.id")
-        .where('e.workout_id', id)
-        .first()
-}
+// function byId(id){
+//     return db('exercises as e')
+//         .select("e.id", "w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
+//         .join("workout as w", "e.workout_id", "=", "w.id")
+//         .where('e.workout_id', id)
+//         .first()
+// }
 
 // FIND BY BODY PART -----> TEST
-function region(region){
-    return db('exercises as e')
-        .select("w.workout_name", "e.exercise")
-        .join("workout as w", "e.workout_id", "=", "w.id")
-        .where("w.workout_name", region);
-}
+// function region(region){
+//     return db('exercises as e')
+//         .select("w.workout_name", "e.exercise")
+//         .join("workout as w", "e.workout_id", "=", "w.id")
+//         .where("w.workout_name", region);
+// }
 
 // FINDS EXERCISES FOR USER
 function exercisesInWO(workoutId){

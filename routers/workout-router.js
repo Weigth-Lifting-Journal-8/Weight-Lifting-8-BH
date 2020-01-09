@@ -38,7 +38,6 @@ router.get('/:id', middleware, (req, res) => {
 router.get('/:userId/all', validateUserId, middleware, (req, res) => {
     const {userId} = req.params;
 
-    console.log(req.params)
     UserModel.findWorkout(userId)
         .then(workout => {
             res.status(200).json(workout)

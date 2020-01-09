@@ -56,19 +56,19 @@ router.get('/:userId/:id', validateUserId, middleware, (req, res) => {
 //    ||------------------TEST ENDPOINT---------------------||
 //    ||////////////////////////////////////////////////////||
 //       GETS A LIST OF EXERCISES BY SPECIFIC USER WORKOUT
-router.get('/region/:userId/:region', middleware, (req, res) => {
-    const { region } = req.params;
+// router.get('/region/:userId/:region', middleware, (req, res) => {
+//     const { region } = req.params;
     
-    console.log(req.params);
+//     console.log(req.params);
 
-    ExModel.region(region)
-        .then(exercise => {
-                res.status(200).json({ exercise })
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Problem receiving exercise.'})
-        })
-});
+//     ExModel.region(region)
+//         .then(exercise => {
+//                 res.status(200).json({ exercise })
+//         })
+//         .catch(err => {
+//             res.status(500).json({ message: 'Problem receiving exercise.'})
+//         })
+// });
 
 // POSTS EXERCISE UNDER WORKOUT
 router.post('/:workout_id', middleware, (req, res) => {
