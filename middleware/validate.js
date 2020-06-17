@@ -1,4 +1,4 @@
-const UserModel = require('../models/user-model.js');
+const UserModel = require('../models/auth-model.js');
 
 // MIDDLEWARE FOR VALIDATING USER ID ------>>>> MAY NOT NEED
 function validateUserId(req, res, next) {

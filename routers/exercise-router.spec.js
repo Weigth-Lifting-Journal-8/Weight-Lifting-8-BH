@@ -28,14 +28,4 @@ describe('EXERCISE-ROUTER', () => {
                 })   
         })
     })
-    // describe("GET /", () => {
-    //     it('Returns a 200 OK', async() => {
-    //         await app
-    //             .get('/api/exercises/1')
-    //             .set('Authorization', `${token}`)
-    //             .then(res => {
-    //                 expect(res.json).toBe(res);
-    //             })   
-    //     })
-    // })
 })

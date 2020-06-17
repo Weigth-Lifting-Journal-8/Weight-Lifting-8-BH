@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const UserModel = require('../models/user-model.js');
+const UserModel = require('../models/workout-model.js');
 const middleware = require('../middleware/verify-middleware.js');
 const validateUserId = require('../middleware/validate.js');
 
