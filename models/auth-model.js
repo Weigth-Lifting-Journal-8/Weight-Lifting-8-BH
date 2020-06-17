@@ -50,13 +50,13 @@ async function getUserById(id){
 
     const user = await db('users')
         .where({ id })
-        .select('id', 'username', 'created_at', 'updated_at')
+        .select('id', 'email', 'created_at', 'updated_at')
         .first()
         .then()
     // User exists, return all workouts for that user
     if(user) {
         workouts = await db('workouts as w')
-            .leftJoin('workouts_exercises as we', 'we.workout_id', 'w.id')
+            .leftJoin('workout_exercises as we', 'we.workout_id', 'w.id')
             .leftJoin('exercises as e', 'we.exercise_id', 'e.id')
             .select('w.id', 'w.name')
             .where({ user_id: id })

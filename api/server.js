@@ -4,7 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 // Validation Middleware
-const restricted = require("../middleware/validate")
+const restricted = require("../middleware/verify-middleware.js")
 
 
 // IMPORT AUTH ROUTER

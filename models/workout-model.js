@@ -16,21 +16,16 @@ function findWorkout(userId){
       .where("w.user_id", userId)
 }
 
-// POSTS NEW WORKOUT
+// POSTS NEW WORKOUT --> Returns added workout
 function addWorkout(data){
   return db('workout')
-      .insert(data, "id")
-      .then(ids => {
-          const [id] = ids;
-
-          return getWorkoutById(id);
-      });
+      .insert("id", data)
 }
 
 // GETS WORKOUT BY ID
 function getWorkoutById(workout){
   return db('workout')
-      .select('id','workout_name', 'date')
+      .select('id','name', 'date')
       .where('id', workout)
 };
 

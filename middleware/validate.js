@@ -2,8 +2,8 @@ const UserModel = require('../models/auth-model.js');
 
 // MIDDLEWARE FOR VALIDATING USER ID ------>>>> MAY NOT NEED
 function validateUserId(req, res, next) {
-    const id = req.params.userId;
- 
+    const id = req.params.id;
+    console.log('This is id', id)
     UserModel.getUserById(id)
        .then(user => {
           if (!user) {
