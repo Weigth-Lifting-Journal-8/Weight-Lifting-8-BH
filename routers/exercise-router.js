@@ -2,8 +2,8 @@ const router = require('express').Router();
 
 // IMPORT MODELS/MIDDLEWARE
 const ExModel = require('../models/exercise-model.js');
-const middleware = require('../auth/verify-middleware.js');
-const validateUserId = require('../auth/validate.js');
+const middleware = require('../middleware/verify-middleware.js');
+const validateUserId = require('../middleware/validate.js');
 
 
 // GETS ALL EXERCISES INCLUDING BODYPART/REGION

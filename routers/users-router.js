@@ -5,25 +5,31 @@ const jwt = require('jsonwebtoken');
 const Users = require('../models/auth-model.js');
 
 // Requires 4 fields: email, password, firstName, lastName
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   // implement registration
   let user = req.body;
-  const hash = bcrypt.hashSync(user.password, 10);
-  user.password = hash;
 
-  Users.addUser(user)
-    .then(user => {
-      res.status(201).json({
-          id: user.id,
-          email: user.email,
-          password: user.password,
-          firstName: user.firstName,
-          lastName: user.lastName,
+  const email = await Users.findByEmail(user.email)
+
+  if (email){
+    console.log("this is the email", email)
+    res.status(400).json({ message: 'That email is already taken.'})
+  } else {
+    const hash = bcrypt.hashSync(user.password, 10);
+    user.password = hash;
+    
+    Users.addUser(user)
+      .then(user => {
+        res.status(201).json({
+            id: user.id,
+            email: user.email,
+            password: user.password
+        })
       })
-    })
-    .catch(err => {
-      res.status(400).json({ Error: `Bad request: ${err}`});
-    });
+      .catch(err => {
+        res.status(400).json({ Error: `Bad request: ${err}`});
+      });
+   }
 });
 
 router.post('/login', (req, res) => {

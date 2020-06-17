@@ -1,8 +1,8 @@
 const router = require('express').Router();
 
 const UserModel = require('../models/user-model.js');
-const middleware = require('../auth/verify-middleware.js');
-const validateUserId = require('../auth/validate.js');
+const middleware = require('../middleware/verify-middleware.js');
+const validateUserId = require('../middleware/validate.js');
 
 
 // GETS ALL USERS
