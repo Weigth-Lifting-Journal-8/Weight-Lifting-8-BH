@@ -2,13 +2,16 @@ const router = require('express').Router();
 
 const Workouts = require('../models/workout-model.js');
 const Users = require('../models/auth-model.js');
-const middleware = require('../middleware/verify-middleware.js');
-const validateUserId = require('../middleware/validate.js');
+const validateWorkout = require('../middleware/validate-workout.js');
+const validateUser = require('../middleware/validate-user.js');
 
+// Get All Workouts For a User
+router.get('/:id/workouts', validateUser, (req, res) => {
 
+})
 
 // Adds workout for User
-router.post('/:id/workouts', (req, res) => {
+router.post('/:id/workouts', validateUser, validateWorkout, (req, res) => {
     const workout_data = req.body;
     const { id } = req.params;
 
