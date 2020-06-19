@@ -8,6 +8,13 @@ module.exports = {
     remove
 }
 
+// POSTS NEW WORKOUT
+function addWorkout(data){
+  return db('workouts')
+      .insert(data, "id")
+}
+
+
 // FINDS ALL USER WORKOUTS
 function findWorkout(userId){
   return db("workout as w")
@@ -16,11 +23,6 @@ function findWorkout(userId){
       .where("w.user_id", userId)
 }
 
-// POSTS NEW WORKOUT --> Returns added workout
-function addWorkout(data){
-  return db('workout')
-      .insert("id", data)
-}
 
 // GETS WORKOUT BY ID
 function getWorkoutById(workout){

@@ -10,13 +10,13 @@ module.exports = (req, res, next) => {
       const secret = process.env.JWT_SECRET || "Lift";
       jwt.verify(token, secret, function(err, decodedToken) {
         if (err) {
-          res.status(401).json({ message: 'Invalid token.' });
+          return res.status(401).json({ message: 'Invalid token.' });
         } else {
           req.decodedJwt = decodedToken;
           next();
         }
       });
     } else {
-      res.status(401).json({ message: 'Please login and try again.' });
+      return res.status(401).json({ message: 'Please login and try again.' });
     }
   };

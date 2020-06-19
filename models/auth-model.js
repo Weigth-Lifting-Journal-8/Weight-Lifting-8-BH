@@ -2,7 +2,6 @@ const db = require('../data/dbConfig.js');
 
 module.exports = {
     addUser, 
-    findBy,
     findById,
     findByEmail,
     getAll,
@@ -33,15 +32,12 @@ function findById(id){
         .where({ id })
         .first()
 }
-// Finds All Users
-function findBy(users){
-    return db('users')
-        .where(users)
-}
 
 // FINDS ALL USERS
 function getAll(){
-    return db('users');
+    return db('users')
+        .orderBy('id')
+
 }
 
 // FINDS BY ID, RETURNS ALL USER DATA
@@ -52,7 +48,6 @@ async function getUserById(id){
         .where({ id })
         .select('id', 'email', 'created_at', 'updated_at')
         .first()
-        .then()
     // User exists, return all workouts for that user
     if(user) {
         workouts = await db('workouts as w')

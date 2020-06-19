@@ -32,6 +32,7 @@ router.post('/register', async (req, res) => {
    }
 });
 
+// LOGIN IMPLEMENTATION --> Returns Token
 router.post('/login', (req, res) => {
   // implement login
   let { email, password } = req.body;
@@ -54,6 +55,25 @@ router.post('/login', (req, res) => {
     });
 });
 
+// GETS User By Id
+router.get('/:id', async (req, res) => {
+  let { id } = req.params;
+
+  const user = await Users.getUserById(id)
+
+  if(user){
+    return res.status(200).json({ message: "User Located!", user})
+  } else {
+    return res.status(500).json({ message: "There is no user by that id."})
+  }
+})
+
+// GETS All Users
+router.get('/', (req, res) => {
+  Users.getAll()
+     .then(users => res.status(200).json({ message: "Users Located!", users}))
+     .catch(err => res.status(500).json({ message: "Trouble getting all users.", err}))
+})
 
 function makeToken(user){
   const payload = {
