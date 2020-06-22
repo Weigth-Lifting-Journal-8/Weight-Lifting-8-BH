@@ -1,5 +1,4 @@
 // Used to see if a workout name has been created. (may or may not need)
-const Workout = require('../models/workout-model.js')
 const User = require('../models/auth-model.js')
 // Create model to get workout by name or id
 async function validateWorkout(req, res, next){ 

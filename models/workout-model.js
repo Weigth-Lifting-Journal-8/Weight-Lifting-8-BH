@@ -13,8 +13,6 @@ module.exports = {
 function addWorkout(data){
   return db('workouts')
       .insert(data, "id")
-
-
 }
 
 
@@ -28,10 +26,10 @@ function findWorkout(userId){
 
 
 // GETS WORKOUT BY ID
-function getWorkoutById(workout){
+function getWorkoutById(w_id){
   return db('workouts')
       .select('id','name', 'date')
-      .where('id', workout)
+      .where('id', w_id)
 };
 
 

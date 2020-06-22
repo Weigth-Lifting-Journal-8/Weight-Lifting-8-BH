@@ -4,9 +4,9 @@ const Workouts = require('../models/workout-model.js');
 const Users = require('../models/auth-model.js');
 const validateWorkout = require('../middleware/validate-workout.js');
 const validateUser = require('../middleware/validate-user.js');
-
+const validateWorkoutID = require('../middleware/validate-workout-id.js');
 // Get All Workouts For a User
-router.get('/:id/workouts', validateUser, (req, res) => {
+router.get('/:id', validateUser, (req, res) => {
     const { id } = req.params;
 
     Workouts.findWorkout(id)
@@ -15,7 +15,7 @@ router.get('/:id/workouts', validateUser, (req, res) => {
 })
 
 // Adds workout for User
-router.post('/:id/workouts', validateUser, validateWorkout, (req, res) => {
+router.post('/:id', validateUser, validateWorkout, (req, res) => {
     const workout_data = req.body;
     const { id } = req.params;
 
@@ -30,8 +30,19 @@ router.post('/:id/workouts', validateUser, validateWorkout, (req, res) => {
     .catch(err => res.status(500).json({ error: "The server failed to add your workout.", message: err.message}))
 })
 
-
-
+// Edits Single Workout By ID --> returns updated item w/ id, name, date
+router.put('/:id', validateWorkoutID, (req, res) => {
+    const new_data = req.body;
+    const { id } = req.params;
+    
+    Workouts.update(id, new_data)
+        .then(workout => {
+            res.status(200).json(workout)
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'server could not edit workout', error_message: err.message})
+        })
+})
 
 
 
