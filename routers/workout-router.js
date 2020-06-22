@@ -7,7 +7,11 @@ const validateUser = require('../middleware/validate-user.js');
 
 // Get All Workouts For a User
 router.get('/:id/workouts', validateUser, (req, res) => {
+    const { id } = req.params;
 
+    Workouts.findWorkout(id)
+        .then(data => res.status(200).json(data))
+        .catch(err => res.status(500).json({ error: err.message}))
 })
 
 // Adds workout for User
