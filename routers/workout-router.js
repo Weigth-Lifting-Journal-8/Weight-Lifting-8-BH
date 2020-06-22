@@ -5,6 +5,8 @@ const Users = require('../models/auth-model.js');
 const validateWorkout = require('../middleware/validate-workout.js');
 const validateUser = require('../middleware/validate-user.js');
 const validateWorkoutID = require('../middleware/validate-workout-id.js');
+
+
 // Get All Workouts For a User
 router.get('/:id', validateUser, (req, res) => {
     const { id } = req.params;
@@ -13,6 +15,20 @@ router.get('/:id', validateUser, (req, res) => {
         .then(data => res.status(200).json(data))
         .catch(err => res.status(500).json({ error: err.message}))
 })
+
+// Get Individual Workout --> Uses workout ID
+router.get('/single/:id', validateWorkoutID, (req, res) => {
+    const { id } = req.params;
+    
+    Workouts.getWorkoutById(id)
+        .then(info => {
+            res.status(200).json(info)
+        })
+        .catch(err => {
+            res.status(400).json({ error: err.message, message: 'Problem gathering individual workout.' })
+        })
+})
+
 
 // Adds workout for User
 router.post('/:id', validateUser, validateWorkout, (req, res) => {
@@ -37,14 +53,25 @@ router.put('/:id', validateWorkoutID, (req, res) => {
     
     Workouts.update(id, new_data)
         .then(workout => {
-            res.status(200).json(workout)
+            res.status(204).json(workout)
         })
         .catch(err => {
             res.status(500).json({ error: 'server could not edit workout', error_message: err.message})
         })
 })
 
+// Deletes an Individual Workout --> By ID
+router.delete('/:id', validateWorkoutID, (req, res) => {
+    const { id } = req.params;
 
+    Workouts.remove(id)
+        .then(response => {
+            res.status(200).json({ message: `Successfully deleted ${response}`})
+        })
+        .catch(err => {
+            res.status(500).json(err.message)
+        })
+})
 
 
 
