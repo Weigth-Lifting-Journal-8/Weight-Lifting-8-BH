@@ -5,15 +5,12 @@ const User = require('../models/auth-model.js')
 async function validateWorkout(req, res, next){ 
   const id = req.params.id;
   const { name } = req.body;
-  console.log("name", name)
   const user_workouts = await User.getUserById(id)
-  console.log("user workouts", user_workouts.workouts)
 
   if(user_workouts.workouts.length){
     const workout_list = await user_workouts.workouts.map(workout => workout.name)
-    console.log("list", workout_list)
     if(workout_list.includes(name)){
-      return res.status(404).json({ message: "Your journal already contains this workout." })
+      return res.status(404).json({ message: `Your journal already contains ${name} as a workout.` })
     } else {
       next()
     }
