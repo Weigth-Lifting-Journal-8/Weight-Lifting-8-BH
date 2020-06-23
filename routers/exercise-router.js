@@ -2,138 +2,93 @@ const router = require('express').Router();
 
 // IMPORT MODELS/MIDDLEWARE
 const ExModel = require('../models/exercise-model.js');
-const middleware = require('../auth/verify-middleware.js');
-const validateUserId = require('../auth/validate.js');
+const Workouts = require('../models/workout-model.js')
+const validateUser = require('../middleware/verify-middleware.js');
+const validateWorkoutID = require('../middleware/validate-workout-id.js');
+const validateExercise = require('../middleware/validate-exercise');
+const validateExerciseID = require('../middleware/validate-exercise-id.js');
+const validateWorkoutName = require('../middleware/workout-name-val.js');
 
 
-// GETS ALL EXERCISES INCLUDING BODYPART/REGION
-router.get('/', middleware, (req, res) => {
-    ExModel.getAllExercises()
-        .then(movement => {
-            res.json(movement)
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Failed to load exercises', it: console.log(err)})
-        })
-});
-
-// GETS WORKOUT BY ID
-router.get('/:id', middleware, (req, res) => {
-    const id = req.params.id;
-
-    ExModel.exerciseById(id)
-        .then(user => {
-            if(!user){
-                res.status(404).json({ message: "Could not find exercise id."})
-            } else {
-                res.json(user)
-            }      
-        })
-        .catch(err => {
-            res.status(500).json({ it: console.log(err),message: 'Problem receiving exercise.'})
-        })
-});
-
-// GETS A LIST OF EXERCISES BY SPECIFIC USER WORKOUT
-router.get('/:userId/:id', validateUserId, middleware, (req, res) => {
+// Get all exercises under a workout
+router.get('/:id', validateWorkoutID, (req, res) => {
     const { id } = req.params;
-    const { userId } = req.params;
-
-    ExModel.exercisesInWO(id, userId)
-        .then(exercise => {
-            console.log(exercise)
-            if(exercise.length > 0){
-                res.status(200).json({ exercise})
-            } else {
-                res.status(404).json({ message: "Need to make a workout list."})
-            }      
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Problem receiving exercise.'})
-        })
-});
-//    ||////////////////////////////////////////////////////||
-//    ||------------------TEST ENDPOINT---------------------||
-//    ||////////////////////////////////////////////////////||
-//       GETS A LIST OF EXERCISES BY SPECIFIC USER WORKOUT
-// router.get('/region/:userId/:region', middleware, (req, res) => {
-//     const { region } = req.params;
+    let message;
     
-//     console.log(req.params);
+    ExModel.findById(id)
+        .then(data => {
+            message = !data.exercises.length ? 'This workout is empty.' : `Workout contains ${data.exercises.length} exercises.`;
 
-//     ExModel.region(region)
-//         .then(exercise => {
-//                 res.status(200).json({ exercise })
-//         })
-//         .catch(err => {
-//             res.status(500).json({ message: 'Problem receiving exercise.'})
-//         })
-// });
-
-// POSTS EXERCISE UNDER WORKOUT
-router.post('/:workout_id', middleware, (req, res) => {
-    const newExercise = req.body;
-    newExercise.workout_id = req.params.workout_id;
-
-    if(!newExercise.exercise){
-        res.status(400).json({ message: "Exercise needs a name."})
-    } else if (!newExercise.weight){
-        res.status(400).json({ message: "Exercise needs a weight."})
-    } else if (!newExercise.sets){
-        res.status(400).json({ message: "Exercise needs a number of sets."})
-    } else if (!newExercise.reps){
-        res.status(400).json({ message: "Exercise needs a number of reps."})
-    } else {
-        ExModel.addExercise(newExercise)
-            .then(workout => {
-                    res.status(201).json({workout, message: `Successfully added ${workout.exercise} to ${workout.workout_name}`})
-            })
-            .catch(err => {
-                console.log(err)
-                res.status(500).json({ err, message: 'Problem posting workout.'})
-            })
-}});
-
-// EDITS EXERCISE
-router.put('/:id', middleware, (req, res) => {
-    const id = req.params.id;
-    const edit = req.body;
-
-    ExModel.updateEx(id, edit)
-        .then(update => {
-            if(!update.exercise){
-                res.status(400).json({ message: "Exercise needs a name."})
-            } else if (!update.weight){
-                res.status(400).json({ message: "Exercise needs a weight."})
-            } else if (!update.sets){
-                res.status(400).json({ message: "Exercise needs a number of sets."})
-            } else if (!update.reps){
-                res.status(400).json({ message: "Exercise needs a number of reps."})
-            } else {
-                res.status(201).json({update, message: `Successfully edited ${update.exercise}`})
-        }})
-        .catch(err => {
-            console.log(err)
-            res.status(500).json({ message: 'Problem editing workout.'})
-        })
-});
-
-// DELETES EXERCISE
-router.delete('/:id', middleware, (req, res) => {
-    const id = req.params.id;
-
-    console.log(req.params)
-    ExModel.removeEx(id)
-        .then(count => {
-            if(count > 0){
-                res.status(202).json({ message: "Exercise Deleted."})
-            } else {
-                res.status(404).json({ message: "Exercise does not exist"})
-            }
+            res.status(200).json({data, message})
         })
         .catch(err => {
-            res.status(500).json({ message: 'Problem deleting workout.'})
+            err.message,
+            res.status(500).json({ message: "There was a problem connecting to workout and exercise."})
         })
 })
+
+
+// POSTS EXERCISE UNDER WORKOUT
+router.post('/:id', validateUser, validateWorkoutID, (req, res) => {
+    const newExercise = req.body;
+    const { id } = req.params
+
+    const validationResult = validateExercise(newExercise);
+    if(validationResult.isSuccesful){
+        ExModel.addExercise(newExercise, id)
+            .then(workout => {
+                res.status(201).json(workout)
+            })
+            .catch(err => {
+                res.status(500).json(err.message)
+            })
+    } else {
+        res.status(400).json({
+            errors: validationResult.errors
+        })
+    }
+});
+
+// Edit a Single Exercise from a workout
+// :id = exercise_id, :workout_id, new_data = updated
+
+    // Update model takes in id(exercise), workout_id, and new_data
+    //      Does the Exercise ID Exist? // Middleware
+    //      Does the Workout ID Exist?  // Middleware
+    //      Can be incomplete data because we may just want to change one thing.
+    //      if yes, replace the old data w/ new_data
+    //      no, return a 400 bad request for each individual item
+router.put('/:exercise_id/workout/:workout_id', validateExerciseID, (req, res) => {
+    const new_data = req.body;
+    const { exercise_id, workout_id } = req.params;
+
+    ExModel.updateExercise(exercise_id, workout_id, new_data)
+        .then(data => {
+            console.log(data)
+            res.status(201).json(data)
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.status(500).json({ message: "Server could not update exercise."})
+        })
+})
+
+// Delete Exercise
+router.delete('/in_workout/:exercise_id', (req, res) =>{
+    const { exercise_id } = req.params;
+
+    ExModel.remove(exercise_id)
+        .then(id => {
+            if(id < 1){
+                return res.status(400).json({ message: "There is no item of that id to be removed"})
+            }
+            res.status(200).json({ message: `Successfully removed exercise.`})
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message, message: "Server could not process delete."})
+        })
+})
+
+
 
 module.exports = router;

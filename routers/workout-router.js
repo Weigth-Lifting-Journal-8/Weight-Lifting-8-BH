@@ -1,137 +1,85 @@
 const router = require('express').Router();
 
-const UserModel = require('../models/user-model.js');
-const middleware = require('../auth/verify-middleware.js');
-const validateUserId = require('../auth/validate.js');
+const Workouts = require('../models/workout-model.js');
+const Users = require('../models/auth-model.js');
+const validateWorkout = require('../middleware/validate-workout.js');
+const validateUser = require('../middleware/validate-user.js');
+const validateWorkoutID = require('../middleware/validate-workout-id.js');
 
 
-// GETS ALL USERS
-router.get('/', (req, res) => {
-    UserModel.getAll()
-        .then(user => {
-            res.json(user)
+// Get All Workouts For a User
+router.get('/:id', validateUser, (req, res) => {
+    const { id } = req.params;
+
+    Workouts.findWorkout(id)
+        .then(data => res.status(200).json(data))
+        .catch(err => res.status(500).json({ error: err.message}))
+})
+
+// Get Individual Workout --> Uses workout ID
+router.get('/single/:id', validateWorkoutID, (req, res) => {
+    const { id } = req.params;
+    
+    Workouts.getWorkoutById(id)
+        .then(info => {
+            res.status(200).json(info)
         })
         .catch(err => {
-            res.status(500).json({ message: 'Failed to load users'})
+            res.status(400).json({ error: err.message, message: 'Problem gathering individual workout.' })
         })
 })
 
-// GET USER BY ID
-router.get('/:id', middleware, (req, res) => {
-    const id = req.params.id;
 
-    UserModel.getUserById(id)
-        .then(user => {
-            if(!user){
-                res.status(404).json({ message: "Could not find id."})
-            } else {
-                res.json(user)
-            }      
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Problem receiving user.'})
-        })
+// Adds workout for User
+router.post('/:id', validateUser, validateWorkout, (req, res) => {
+    const workout_data = req.body;
+    const { id } = req.params;
+
+    console.log(workout_data)
+
+    if(!workout_data.name){
+        return res.status(400).json({ message: "Please provide a name for this workout."})
+    }
+    Workouts.addWorkout({
+            ...workout_data,
+            user_id: id
+    })
+    .then(data => res.status(201).json(data))
+    .catch(err => res.status(500).json({ error: "The server failed to add your workout.", message: err.message}))
 })
 
-// GET USER WORKOUTS
-// GIVES FIRST NAME, WORKOUT_NAME, AND DATE
-router.get('/:userId/all', validateUserId, middleware, (req, res) => {
-    const {userId} = req.params;
-
-    UserModel.findWorkout(userId)
+// Edits Single Workout By ID --> returns updated item w/ id, name, date
+router.put('/:id', validateWorkoutID, (req, res) => {
+    const new_data = req.body;
+    const { id } = req.params;
+    
+    Workouts.update(id, new_data)
         .then(workout => {
-            res.status(200).json(workout)
+            res.status(204).json(workout)
         })
         .catch(err => {
-            res.status(500).json({ message: 'Problem receiving workouts.'})
+            res.status(500).json({ error: 'server could not edit workout', error_message: err.message})
         })
 })
 
-// GETS INDIVIDUAL WORKOUT
-    // Provides ID, workout_name, date
-router.get('/:userId/:workout', validateUserId, middleware, (req, res) => {
-    const { workout } = req.params;
-    // const { userId } = req.params;
+// Deletes an Individual Workout --> By ID
+router.delete('/:id', validateWorkoutID, (req, res) => {
+    const { id } = req.params;
 
-    // console.log(req.params)
-
-    UserModel.getWorkoutById(workout)
-        .then(exercise => {
-            if(exercise.length === 0){
-                res.status(404).json({ message: "There is no workout by this id "})
-            } else {
-                res.status(200).json(exercise)
-        }})
-        .catch(err => {
-            res.status(500).json({ message: 'Problem receiving workout.'})
-        })
-})
-
-// POST WORKOUT, Adds new workout, 
-    // generates new user_id for workout, 
-    // date
-    // workout title required
-router.post('/:id', middleware, (req, res) => {
-    const newWorkout = req.body;
-    newWorkout.user_id = req.params.id;
-
-
-    if(!newWorkout.workout_name){
-        res.status(400).json({ message: "Workout needs a name."})
-    } else if (!newWorkout.date){
-        res.status(400).json({ message: "Workout needs a date."})
-    } else {
-        UserModel.addWorkout(newWorkout)
-            .then(workout => {
-                    res.status(201).json(workout)
-            })
-            .catch(err => {
-                res.status(500).json({ message: 'Problem posting workout.'})
-            })
-}})
-
-// EDITS INDIVIDUAL WORKOUT
-router.put('/:id', middleware, (req, res) => {
-    const id = req.params.id;
-
-    UserModel.update(id, req.body)
-        .then(update => {
-            console.log("Update", req.body)
-            if(!req.body.workout_name){
-                res.status(400).json({ message: "Need a workout name"})
-            } else if(!req.body.date){
-                res.status(400).json({ message: "Need a workout date"})
-            } else {
-                res.status(202).json(update)
-            }
+    Workouts.remove(id)
+        .then(response => {
+            res.status(200).json({ message: `Successfully deleted ${response}`})
         })
         .catch(err => {
-            res.status(500).json({ message: 'Problem updating workout.'})
+            res.status(500).json(err.message)
         })
-
 })
 
 
 
 
 
-// DELETES INDIVIDUAL WORKOUT
-router.delete('/:id', middleware, (req, res) => {
-    const id = req.params.id;
 
-    console.log(req.params)
-    UserModel.remove(id)
-        .then(count => {
-            if(count > 0){
-                res.status(202).json({ message: "Workout Deleted."})
-            } else {
-                res.status(404).json({ message: "Workout does not exist"})
-            }
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Problem deleting workout.'})
-        })
-})
 
 
 module.exports = router;

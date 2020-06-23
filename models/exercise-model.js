@@ -1,80 +1,143 @@
 const db = require('../data/dbConfig.js');
 
 module.exports = {
-    getAllExercises,
-    exerciseById,
-    exercisesInWO,
     addExercise,
-    updateEx,
-    removeEx,
-
-    // region,
-    // byId
+    findById,
+    updateExercise,
+    findExById, 
+    remove
 }
-
-// FINDS ALL Exercises w/ Body Part
-function getAllExercises(){
-    return db('exercises as e')
-        .select("w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
-        .join("workout as w", "e.workout_id", "=", "w.id");
-};
-
-// FINDS BY ID ----> Gives back specific workoutname for id
-function exerciseById(id){
-    return db('exercises as e')
-        .select("e.id", "w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
-        .join("workout as w", "e.workout_id", "=", "w.id")
-        .where('e.id', id)
+// Find Exercise By exercise ID
+function findExById(id){
+    return db('exercises')
+        .where({ id })
         .first()
 }
 
-// ORIGINAL EXERCISE BY ID -----> Backup == Just in case
-// function byId(id){
-//     return db('exercises as e')
-//         .select("e.id", "w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
-//         .join("workout as w", "e.workout_id", "=", "w.id")
-//         .where('e.workout_id', id)
-//         .first()
-// }
+//Find Workout ID and return all exercises associated
+async function findById(workout_id){
+    const weights = await db(`workouts as w`)
+        .select(
+            'w.id as workout_id',
+            'w.name as workout_name'
+            )
+        .where({ id: workout_id })
+        .first()
+    // Find exercises associated with that workout
+    if(weights){
+        const exercises = await db('workout_exercises as we')
+            .join('workouts as w', 'we.workout_id', 'w.id')
+            .join('exercises as e', 'we.exercise_id', 'e.id')
+            .select(
+                'we.id as user_exercise_id',
+                'e.id as exercise_id',
+                'e.name as exercise_name',
+                'e.region',
+                'we.sets',
+                'we.reps',
+                'we.weight'
+            )
+            .where({ workout_id })
+        // object w/workout and list of exercises
+        return {
+            ...weights,
+            exercises: exercises,
+        }
+    }   
+    return weights
+}
+// Adds Exercise To A Workout
+async function addExercise(exerciseInfo, workout_id){
+    // Get exercise data
+    const exercise = await db('exercises')
+        .where({ name: exerciseInfo.name })
+        .first()
+    // if it exists, add to workout/exercises
+    if(exercise){
+        await db('workout_exercises')
+            .insert({
+                reps: exerciseInfo.reps,
+                sets: exerciseInfo.sets,
+                weight: exerciseInfo.weight,
+                workout_id: workout_id,
+                exercise_id: exercise.id
+            })
+            .returning('id')
+    } else {
+        // Add to exercise db, then w/e
+        const [ id ] = await db('exercises')
+            .insert({
+                name: exerciseInfo.name,
+                region: exerciseInfo.region
+            })
+            .returning('id');
 
-// FIND BY BODY PART -----> TEST
-// function region(region){
-//     return db('exercises as e')
-//         .select("w.workout_name", "e.exercise")
-//         .join("workout as w", "e.workout_id", "=", "w.id")
-//         .where("w.workout_name", region);
-// }
+        await db('workout_exercises')
+            .insert({
+                reps: exerciseInfo.reps,
+                sets: exerciseInfo.sets,
+                weight: exerciseInfo.weight,
+                workout_id: workout_id,
+                exercise_id: id
+            })
+            .returning('id')
+    }
+    return await findById(workout_id)
+}
+// Edit a single exercise
+async function updateExercise(id, workout_id, exercise_data){
+    const { name, region, sets, reps, weight } = exercise_data;
+    // Get Workout Data 
+    const exercise = await db('exercises')
+        .where({ name })
+        .first()
+    // if exercise exists, update information on workout_exercises
+    if(exercise){
+        return db('workout_exercises')
+            .update({
+                reps, 
+                sets, 
+                weight, 
+                workout_id,
+                exercise_id: exercise.id
+            })       
+            .where({ id: id })
+    } 
+    else {
+        // Create new exercise, extract id to use in w/e db.
+        const [ id ] = await db('exercises')
+            .insert({
+                name, 
+                region
+            })
+            .returning('id')
 
-// FINDS EXERCISES FOR USER
-function exercisesInWO(workoutId){
-    return db("exercises as e")
-        .select("e.id","w.workout_name", "e.exercise", "e.weight", "e.sets", "e.reps")
-        .join("workout as w", "e.workout_id", "=", "w.id")
-        .where("w.workout_name", workoutId);
+        return db('workout_exercises')
+            .insert({
+                reps,
+                sets, 
+                weight,
+                workout_id,
+                exercise_id: id
+            })
+            .where({ id: id })
+    }
 }
 
-// POSTS NEW EXERCISE
-function addExercise(data){
-    return db('exercises')
-        .insert(data, "id")
-        .then(ids => {
-            const [id] = ids;
-
-            return exerciseById(id)
-        });
+// Deletes Exercise only from Workout, NOT FROM EXISTENCE
+function remove(id){
+    return db('workout_exercises')
+        .where({ id })
+        .first()
+        .del()
 }
+// Get all exercise for single workout
+// Get a single exercise
+// Delete a Single exercise
 
-// EDITS Exercise
-function updateEx(id, changes){
-    return db('exercises')
-        .where('id', id)
-        .update(changes)
-        .then(count => (count > 0 ? exerciseById(id) : null))
-}
 
-// REMOVES Exercise
-function removeEx(id){
-    return db('exercises')
-        .where({id})
-        .delete()
-}
+
+
+
+
+

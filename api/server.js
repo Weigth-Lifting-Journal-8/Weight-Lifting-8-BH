@@ -3,6 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
+// Validation Middleware
+const restricted = require("../middleware/verify-middleware.js")
+
 
 // IMPORT AUTH ROUTER
 const authRouter = require('../routers/users-router.js');
@@ -20,8 +23,8 @@ server.use(express.json());
 
 // RUNNING UNDER http://localhost:4000/login and /register
 server.use('/api/auth', authRouter); // -----> AUTHENTICATION
-server.use('/api/workouts', workoutRouter); // -----> WORKOUT JOURNAL
-server.use('/api/exercises', exerciseRouter); // -----> EXERCISES IN JOURNAL
+server.use('/api/workouts', restricted, workoutRouter); // -----> WORKOUT JOURNAL
+server.use('/api/exercises', restricted, exerciseRouter); // -----> EXERCISES IN JOURNAL
 
 // SET UP BASIC ENDPOINTS
 server.get('/', (req, res) => {
