@@ -2,10 +2,10 @@
 const User = require('../models/auth-model.js')
 // Create model to get workout by name or id
 async function validateWorkout(req, res, next){ 
-  const id = req.params.id;
+  const workout_id = req.params.id;
   const { name } = req.body;
 
-  const user_workouts = await User.getUserById(id)
+  const user_workouts = await User.getUserById(workout_id)
   
   if(user_workouts.workouts.length){
     const workout_list = await user_workouts.workouts.map(workout => workout.name)

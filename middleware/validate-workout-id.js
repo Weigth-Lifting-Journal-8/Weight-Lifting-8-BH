@@ -7,11 +7,10 @@ module.exports = (req, res, next) => {
       if(workout.length){
         next()
       } else {
-        res.status(400).json({ message: `${req.params.id} cannot be edited, it does not exist.`})
+        res.status(400).json({ message: `Workout with the ID of ${req.params.id} does not exist.`})
       }
     })
     .catch(err => {
       res.status(500).json({ error: err.message})
     })
-  
 }

@@ -3,7 +3,15 @@ const db = require('../data/dbConfig.js');
 module.exports = {
     addExercise,
     findById,
-    updateExercise
+    updateExercise,
+    findExById, 
+    remove
+}
+// Find Exercise By exercise ID
+function findExById(id){
+    return db('exercises')
+        .where({ id })
+        .first()
 }
 
 //Find Workout ID and return all exercises associated
@@ -112,12 +120,17 @@ async function updateExercise(id, workout_id, exercise_data){
                 workout_id,
                 exercise_id: id
             })
-            .where({ id: id})
+            .where({ id: id })
     }
 }
 
-
-
+// Deletes Exercise only from Workout, NOT FROM EXISTENCE
+function remove(id){
+    return db('workout_exercises')
+        .where({ id })
+        .first()
+        .del()
+}
 // Get all exercise for single workout
 // Get a single exercise
 // Delete a Single exercise
