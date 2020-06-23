@@ -8,6 +8,9 @@ exports.up = function(knex) {
 
       tbl.integer('sets', 255)
         .notNullable();
+      
+      tbl.integer('weight', 4)
+        .notNullable();
     
       tbl.integer('workout_id')
         .unsigned()

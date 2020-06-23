@@ -4,22 +4,16 @@ const User = require('../models/auth-model.js')
 async function validateWorkout(req, res, next){ 
   const id = req.params.id;
   const { name } = req.body;
-  const user_workouts = await User.getUserById(id)
 
+  const user_workouts = await User.getUserById(id)
+  
   if(user_workouts.workouts.length){
     const workout_list = await user_workouts.workouts.map(workout => workout.name)
     if(workout_list.includes(name)){
       return res.status(404).json({ message: `Your journal already contains ${name} as a workout.` })
-    } else {
-      next()
-    }
+    } 
   }
+  next()
 }
 
 module.exports = validateWorkout;
-// Get list of user workouts
-// create a dictionary of them to look up
-        // if the name is in the dictionary? O(1) lookup
-// check to see if name matches
-//    if name matches, sent response 400 that the workout has already been created
-//    else allow it move to the next step. 

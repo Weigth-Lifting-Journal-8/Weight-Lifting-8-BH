@@ -15,7 +15,6 @@ function addWorkout(data){
       .insert(data, "id")
 }
 
-
 // FINDS ALL USER WORKOUTS
 function findWorkout(userId){
   return db("workouts as w")
