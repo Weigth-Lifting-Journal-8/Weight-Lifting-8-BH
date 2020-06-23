@@ -74,12 +74,14 @@ router.put('/:exercise_id/workout/:workout_id', validateExerciseID, (req, res) =
 })
 
 // Delete Exercise
-router.delete('/in_workout/:exercise_id', validateExerciseID, (req, res) =>{
+router.delete('/in_workout/:exercise_id', (req, res) =>{
     const { exercise_id } = req.params;
 
     ExModel.remove(exercise_id)
         .then(id => {
-            console.log(id)
+            if(id < 1){
+                return res.status(400).json({ message: "There is no item of that id to be removed"})
+            }
             res.status(200).json({ message: `Successfully removed exercise.`})
         })
         .catch(err => {
