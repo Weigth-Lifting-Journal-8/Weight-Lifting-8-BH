@@ -2,9 +2,28 @@ const router = require('express').Router();
 
 // IMPORT MODELS/MIDDLEWARE
 const ExModel = require('../models/exercise-model.js');
+const Workouts = require('../models/workout-model.js')
 const validateUser = require('../middleware/verify-middleware.js');
 const validateWorkoutID = require('../middleware/validate-workout-id.js');
-const validateExercise = require('../middleware/validate-exercise')
+const validateExercise = require('../middleware/validate-exercise');
+const validateWorkoutName = require('../middleware/workout-name-val.js');
+// Get all exercises under a workout
+router.get('/:id', validateWorkoutID, (req, res) => {
+    const { id } = req.params;
+    let message;
+    
+    ExModel.findById(id)
+        .then(data => {
+            message = !data.exercises.length ? 'This workout is empty.' : `Workout contains ${data.exercises.length} exercises.`;
+
+            res.status(200).json({data, message})
+        })
+        .catch(err => {
+            err.message,
+            res.status(500).json({ message: "There was a problem connecting to workout and exercise."})
+        })
+})
+
 
 
 // POSTS EXERCISE UNDER WORKOUT
@@ -27,6 +46,31 @@ router.post('/:id', validateUser, validateWorkoutID, (req, res) => {
         })
     }
 });
+
+// Edit a Single Exercise from a workout
+// :id = exercise_id, :workout_id, new_data = updated
+
+    // Update model takes in id(exercise), workout_id, and new_data
+    //      Does the Exercise ID Exist? // Middleware
+    //      Does the Workout ID Exist?  // Middleware
+    //      Can be incomplete data because we may just want to change one thing.
+    //      if yes, replace the old data w/ new_data
+    //      no, return a 400 bad request for each individual item
+router.put('/:id/workout/:workout_id', validateWorkoutID, (req, res) => {
+    const new_data = req.body;
+    const { id, workout_id } = req.params;
+
+    ExModel.updateExercise(id, workout_id, new_data)
+        .then(data => {
+            console.log(data)
+            res.status(201).json(data)
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.status(500).json({ message: "Server could not update exercise."})
+        })
+
+})
 
 
 module.exports = router;

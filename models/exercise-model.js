@@ -2,10 +2,11 @@ const db = require('../data/dbConfig.js');
 
 module.exports = {
     addExercise,
-    findById
+    findById,
+    updateExercise
 }
 
-//Find ID
+//Find Workout ID and return all exercises associated
 async function findById(workout_id){
     const weights = await db(`workouts as w`)
         .select(
@@ -14,7 +15,6 @@ async function findById(workout_id){
             )
         .where({ id: workout_id })
         .first()
-    console.log("weights", weights)
     // Find exercises associated with that workout
     if(weights){
         const exercises = await db('workout_exercises as we')
@@ -33,24 +33,12 @@ async function findById(workout_id){
         // object w/workout and list of exercises
         return {
             ...weights,
-            exercises: exercises 
+            exercises: exercises,
         }
-    }
-        
+    }   
     return weights
-
 }
-// Add Exercise
-
-// Input: WorkoutID, Exercise Information (name, region, sets, reps)
-// Output: Exercise is added to db. Through WE & E db's.
-
-// Possible Middleware: Check if workout ID exists, check if Exercise ID exists
-//      Collect Exercise Information: add to exercise DB (name, region)
-//      Connect ExcerciseID and WorkoutID for Foreign Keys
-//          Exercise_id = exercise.id
-//          workout_id = (passed in parameter)
-//
+// Adds Exercise To A Workout
 async function addExercise(exerciseInfo, workout_id){
     // Get exercise data
     const exercise = await db('exercises')
@@ -88,15 +76,50 @@ async function addExercise(exerciseInfo, workout_id){
     }
     return await findById(workout_id)
 }
-// Add an exercise to a specific workout. 
-//      Make sure WorkoutId exists
-//          if yes, add it under the workout
-// 
+// Edit a single exercise
+async function updateExercise(id, workout_id, exercise_data){
+    const { name, region, sets, reps, weight } = exercise_data;
+    // Get Workout Data 
+    const exercise = await db('exercises')
+        .where({ name })
+        .first()
+    // if exercise exists, update information on workout_exercises
+    if(exercise){
+        return db('workout_exercises')
+            .update({
+                reps, 
+                sets, 
+                weight, 
+                workout_id,
+                exercise_id: exercise.id
+            })       
+            .where({ id: id })
+    } 
+    else {
+        // Create new exercise, extract id to use in w/e db.
+        const [ id ] = await db('exercises')
+            .insert({
+                name, 
+                region
+            })
+            .returning('id')
+
+        return db('workout_exercises')
+            .insert({
+                reps,
+                sets, 
+                weight,
+                workout_id,
+                exercise_id: id
+            })
+            .where({ id: id})
+    }
+}
+
 
 
 // Get all exercise for single workout
 // Get a single exercise
-// Edit a single exercise
 // Delete a Single exercise
 
 
