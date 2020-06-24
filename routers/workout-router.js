@@ -1,7 +1,6 @@
 const router = require('express').Router();
 
 const Workouts = require('../models/workout-model.js');
-const Users = require('../models/auth-model.js');
 const validateWorkout = require('../middleware/validate-workout.js');
 const validateUser = require('../middleware/validate-user.js');
 const validateWorkoutID = require('../middleware/validate-workout-id.js');
@@ -74,12 +73,5 @@ router.delete('/:id', validateWorkoutID, (req, res) => {
             res.status(500).json(err.message)
         })
 })
-
-
-
-
-
-
-
 
 module.exports = router;

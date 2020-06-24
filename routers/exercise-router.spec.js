@@ -14,7 +14,8 @@ describe('EXERCISE-ROUTER', () => {
                 password: 'password'     
             })
             .end((err, res) => {
-                token = res.body.token;
+                token = res.body.token,
+                err,
                 done()
             })
     })
