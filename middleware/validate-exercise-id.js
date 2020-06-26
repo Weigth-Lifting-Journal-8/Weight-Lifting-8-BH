@@ -4,7 +4,6 @@ module.exports = (req, res, next) => {
   console.log(req.params.exercise_id)
   ExModel.findExById(req.params.exercise_id)
     .then(workout => {
-      console.log('workout', workout)
       if(workout){
         next()
       } else {

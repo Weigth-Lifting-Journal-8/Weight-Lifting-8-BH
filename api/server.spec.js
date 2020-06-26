@@ -49,14 +49,14 @@ describe('SERVER & AUTHORIZATION', () => {
             it('needs to return 201 OK', async () => {
                 const res = await request(server)
                     .post('/api/auth/register')
-                    .send({ email: "test2@email.com", password: "password", firstName: "AJ", lastName: "Hill" });
+                    .send({ email: "test2@email.com", password: "password"});
                 expect(res.status).toBe(201);
             });
     
             it('validates', async () => {
                 const res = await request(server)
                     .post('/api/auth/register')
-                    .send({ email: "test2@email.com", password: "password", firstName: "AJ", lastName: "Hill" });
+                    .send({ email: "test2@email.com", password: "password"});
                 expect(res.body.error).toBe(undefined);
             });
         });

@@ -2,13 +2,12 @@ const router = require('express').Router();
 
 // IMPORT MODELS/MIDDLEWARE
 const ExModel = require('../models/exercise-model.js');
-const Workouts = require('../models/workout-model.js')
 const validateUser = require('../middleware/verify-middleware.js');
 const validateWorkoutID = require('../middleware/validate-workout-id.js');
 const validateExercise = require('../middleware/validate-exercise');
 const validateExerciseID = require('../middleware/validate-exercise-id.js');
-const validateWorkoutName = require('../middleware/workout-name-val.js');
 
+// Get a single exercise under a workout
 
 // Get all exercises under a workout
 router.get('/:id', validateWorkoutID, (req, res) => {

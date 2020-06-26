@@ -131,9 +131,7 @@ function remove(id){
         .first()
         .del()
 }
-// Get all exercise for single workout
-// Get a single exercise
-// Delete a Single exercise
+
 
 
 
