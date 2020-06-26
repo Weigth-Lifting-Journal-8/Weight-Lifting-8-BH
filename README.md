@@ -99,26 +99,81 @@ This document contains three main routers:
 **Requirements**:
     Email and Password
     
-*Example of Body:*
+*Example of Return Body:*
+
+Will return ID, email, and encrypted password.
 
     {
-        email: 'test@email.com', 
-        password: 'password'
+        "id": 1,
+        "email": "user@email.com",
+        "password": "$2a$10$oiX1pPLf0QN.ecWSw4MxYuj0Srk2xWBED5QwD93ovUFuy59h5vCfW"
     }
 ### **<u>POST</u> Login**
 **End Point**: ``/auth/login``
 
 
 **Requirements**:
-    email, password
+    Email, Password
  
 
+*Example of Return Body:*
+
     {
-        email: 'test@email.com', 
-        password: 'password', 
+        "userId": 1,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxlYnJvbkBlbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRvaVgxcFBMZjBRTi5lY1dTdzRNeFl1ajBTcmsyeFdCRUQ1UXdEOTNvdlVGdXk1OWg1dkNmVyIsImlhdCI6MTU5MjkyODg3MCwiZXhwIjoxNTkzNTMzNjcwfQ.Bq9vCniHMW_uBNJzxsJf273j-lRfv-4KyNP59aPa1Bg",
+        "message": "logged in!"
     }
 
-1. Returns a token that will expire in 1 hour and will require you to login again.
+### **<u>GET</u> User by ID**
+**End Point**: ``/auth/:id``
+
+**!Important**: Include the ``ID`` of existing user for ``:id``.
+
+ 
+*Example of Return Body:*
+
+    {
+        "message": "User Located!",
+        "user": {
+            "id": 1,
+            "email": "user@email.com",
+            "created_at": "2020-06-22 22:34:31",
+            "updated_at": "2020-06-22 22:34:31",
+            "workouts": [
+            {
+                "id": 1,
+                "name": "Triceps",
+                "exercises": 8
+            },
+            {
+                "id": 2,
+                "name": "Chest Day",
+                "exercises": 0
+            }
+            ]
+        }
+    }
+
+### **<u>GET</u> All Users**
+**End Point**: ``/auth``
+ 
+*Example of Return Body:*
+
+Will return a list of Users form the database.
+
+    {
+        "message": "Users Located!",
+        "users": [
+            {
+            "id": 1,
+            "email": "user@email.com",
+            "password": "$2a$10$oiX1pPLf0QN.ecWSw4MxYuj0Srk2xWBED5QwD93ovUFuy59h5vCfW",
+            "created_at": "2020-06-22 22:34:31",
+            "updated_at": "2020-06-22 22:34:31"
+            }
+        ]
+    }
+
 
 
     
