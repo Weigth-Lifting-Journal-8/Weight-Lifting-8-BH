@@ -224,10 +224,11 @@ Will return a list of all workouts for a user.
 
 
 *SEND A JSON OBJECT:*
-  {
-    "name": "Upper",
-    "date": "1/12/2020"
-  }
+
+    {
+        "name": "Upper",
+        "date": "1/12/2020"
+    }
 
 *Example of Return Body:*
 
