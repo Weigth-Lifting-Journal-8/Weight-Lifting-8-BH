@@ -223,6 +223,12 @@ Will return a list of all workouts for a user.
 1. Cannot Repeat Existing Workout Name or ID
 
 
+*SEND A JSON OBJECT:*
+  {
+    "name": "Upper",
+    "date": "1/12/2020"
+  }
+
 *Example of Return Body:*
 
 Will return the ID of newly created workout.
@@ -237,6 +243,13 @@ Will return the ID of newly created workout.
 
 **!Important**: Include the ``ID`` of existing Workout for ``:id``.
 1. If the ID's or names don't match it will create a new workout in its place. 
+
+*SEND A JSON OBJECT:*
+  {
+    "name": "Upper",
+    "date": "1/12/2020"
+  }
+
 
 *Example of Return Body:*
 
@@ -259,8 +272,130 @@ Returns a Success Message
         "message": "Successfully deleted 1"
     }
 
+### **<u>GET</u> Gets List of Exercises Under a Workout**
+**End Point**: ``/api/exercises/:id``
+ 
 
-    
+**!Important**: Include the ``ID`` of existing Workout for ``:id``.
+
+
+*Example of Return Body:*
+
+Will return a list of all exercises under a workout.
+
+    {
+        "data": {
+            "workout_id": 3,
+            "workout_name": "Leg Day",
+            "exercises": [
+            {
+                "user_exercise_id": 14,
+                "exercise_id": 6,
+                "exercise_name": "Squat",
+                "region": "Full-Body",
+                "sets": 4,
+                "reps": 5,
+                "weight": 225
+            }
+            ]
+        },
+        "message": "Workout contains 1 exercises."
+    }
+
+### **<u>POST</u> Adds an Exercise to a Workout**
+**End Point**: ``/api/exercises/:id``
+ 
+
+**!Important**: Include the ``ID`` of existing Workout for ``:id``.
+
+*SEND A JSON OBJECT:*
+
+    {
+        "name": "Leg Extension",
+        "region": "Quads",
+        "weight": 1,
+        "sets": 4,
+        "reps": 5
+    }
+
+*Example of Return Body:*
+
+Will return a list of all exercises under a workout, including your new exercise.
+
+    {
+        "workout_id": 3,
+        "workout_name": "Leg Day",
+        "exercises": [
+            {
+            "user_exercise_id": 14,
+            "exercise_id": 6,
+            "exercise_name": "Squat",
+            "region": "Full-Body",
+            "sets": 4,
+            "reps": 5,
+            "weight": 225
+            },
+            {
+            "user_exercise_id": 15,
+            "exercise_id": 7,
+            "exercise_name": "Lunges",
+            "region": "Quads",
+            "sets": 4,
+            "reps": 5,
+            "weight": 1
+            },
+            {
+            "user_exercise_id": 17,
+            "exercise_id": 9,
+            "exercise_name": "Leg Extension",
+            "region": "Quads",
+            "sets": 4,
+            "reps": 5,
+            "weight": 1
+            }
+        ]
+    }
+### **<u>PUT</u> Updates an Exercise to a Workout**
+**End Point**: ``/api/:exercise_id/exercises/:id``
+ 
+
+**!Important**: 
+1. Include the ``ID`` of existing Workout for ``:id``.
+1. Include ``:exercise_id`` of existing exercise. 
+
+*SEND A JSON OBJECT:*
+
+    {
+        "name": "Leg Extension",
+        "region": "Quads",
+        "weight": 1,
+        "sets": 4,
+        "reps": 5
+    }
+
+*Example of Return Body:*
+
+Will return a list of all exercises under a workout, including your new exercise.
+
+    {
+        1
+    }
+
+### **<u>DELETE</u> Deletes an Exercise in a Workout**
+**End Point**: ``/api/exercises/in_workout/:id ``
+ 
+
+**!Important**: 
+1. Include the ``user_exercise_id`` of existing Exercise for ``:id``.
+
+
+*Example of Return Body:*
+
+Will return a success message.
+
+    {
+        "message": "Successfully removed exercise."
+    }
 
 
 
