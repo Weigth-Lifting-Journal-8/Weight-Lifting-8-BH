@@ -92,9 +92,8 @@ This document contains three main routers:
 
 
 ## **Detailed Documentation**
-
 ### **<u>POST</u> Registration**
-**End Point**: ``/auth/register``
+**End Point**: ``/api/auth/register``
 
 **Requirements**:
     Email and Password
@@ -109,7 +108,7 @@ Will return ID, email, and Token for immediate sign in.
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxlYnJvbkBlbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRvaVgxcFBMZjBRTi5lY1dTdzRNeFl1ajBTcmsyeFdCRUQ1UXdEOTNvdlVGdXk1OWg1dkNmVyIsImlhdCI6MTU5MjkyODg3MCwiZXhwIjoxNTkzNTMzNjcwfQ.Bq9vCniHMW_uBNJzxsJf273j-lRfv-4KyNP59aPa1Bg",
     }
 ### **<u>POST</u> Login**
-**End Point**: ``/auth/login``
+**End Point**: ``/api/auth/login``
 
 
 **Requirements**:
@@ -125,7 +124,7 @@ Will return ID, email, and Token for immediate sign in.
     }
 
 ### **<u>GET</u> User by ID**
-**End Point**: ``/auth/:id``
+**End Point**: ``/api/auth/:id``
 
 **!Important**: Include the ``ID`` of existing user for ``:id``.
 
@@ -155,7 +154,7 @@ Will return ID, email, and Token for immediate sign in.
     }
 
 ### **<u>GET</u> All Users**
-**End Point**: ``/auth``
+**End Point**: ``/api/auth``
  
 *Example of Return Body:*
 
@@ -174,6 +173,91 @@ Will return a list of Users form the database.
         ]
     }
 
+### **<u>GET</u> Workout By ID**
+**End Point**: ``/api/workouts/single/:id``
+ 
+
+**!Important**: Include the ``ID`` of existing workout for ``:id``.
+
+
+*Example of Return Body:*
+
+Will return a single workout from database.
+
+    [
+        {
+            "id": 2,
+            "name": "Chest Day",
+            "date": "3/2/2020"
+        }
+    ]
+
+### **<u>GET</u> List of Workouts for User**
+**End Point**: ``/api/workouts/:id``
+ 
+
+**!Important**: Include the ``ID`` of existing User for ``:id``.
+
+
+*Example of Return Body:*
+
+Will return a list of all workouts for a user.
+
+    [
+        {
+            "id": 1,
+            "name": "Triceps",
+            "date": "3/12/2020"
+        },
+        {
+            "id": 2,
+            "name": "Chest Day",
+            "date": "3/2/2020"
+        }
+    ]
+### **<u>POST</u> Adds a Workout for User**
+**End Point**: ``/api/workouts/:id``
+ 
+
+**!Important**: Include the ``ID`` of existing User for ``:id``.
+1. Cannot Repeat Existing Workout Name or ID
+
+
+*Example of Return Body:*
+
+Will return the ID of newly created workout.
+
+    [
+        1
+    ]
+
+### **<u>PUT</u> Edits a Workout**
+**End Point**: ``/api/workouts/:id``
+ 
+
+**!Important**: Include the ``ID`` of existing Workout for ``:id``.
+1. If the ID's or names don't match it will create a new workout in its place. 
+
+*Example of Return Body:*
+
+    {
+        "id": 4,
+        "name": "Upper",
+        "date": "1/12/2020"
+    }
+
+### **<u>DELETE</u> Deletes a Workout**
+**End Point**: ``/api/workouts/:id``
+ 
+
+**!Important**: Include the ``ID`` of existing Workout for ``:id``.
+
+*Example of Return Body:*
+Returns a Success Message
+
+    {
+        "message": "Successfully deleted 1"
+    }
 
 
     
