@@ -54,7 +54,7 @@ router.put('/:id', validateWorkoutID, (req, res) => {
     
     Workouts.update(id, new_data)
         .then(workout => {
-            res.status(204).json(workout)
+            res.status(200).json(workout[0])
         })
         .catch(err => {
             res.status(500).json({ error: 'server could not edit workout', error_message: err.message})
