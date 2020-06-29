@@ -101,12 +101,12 @@ This document contains three main routers:
     
 *Example of Return Body:*
 
-Will return ID, email, and encrypted password.
+Will return ID, email, and Token for immediate sign in.
 
     {
         "id": 1,
         "email": "user@email.com",
-        "password": "$2a$10$oiX1pPLf0QN.ecWSw4MxYuj0Srk2xWBED5QwD93ovUFuy59h5vCfW"
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxlYnJvbkBlbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRvaVgxcFBMZjBRTi5lY1dTdzRNeFl1ajBTcmsyeFdCRUQ1UXdEOTNvdlVGdXk1OWg1dkNmVyIsImlhdCI6MTU5MjkyODg3MCwiZXhwIjoxNTkzNTMzNjcwfQ.Bq9vCniHMW_uBNJzxsJf273j-lRfv-4KyNP59aPa1Bg",
     }
 ### **<u>POST</u> Login**
 **End Point**: ``/auth/login``

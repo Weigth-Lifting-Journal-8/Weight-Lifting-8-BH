@@ -12,7 +12,6 @@ router.post('/register', async (req, res) => {
   const email = await Users.findByEmail(user.email)
 
   if (email){
-    console.log("this is the email", email)
     res.status(400).json({ message: 'That email is already taken.'})
   } else {
     const hash = bcrypt.hashSync(user.password, 10);
@@ -20,10 +19,11 @@ router.post('/register', async (req, res) => {
     
     Users.addUser(user)
       .then(user => {
+        const token = makeToken(user);
         res.status(201).json({
             id: user.id,
             email: user.email,
-            password: user.password
+            token
         })
       })
       .catch(err => {
