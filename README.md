@@ -92,7 +92,7 @@ This document contains three main routers:
 
 
 ## **Detailed Documentation**
-### **<u>POST</u> Registration**
+### **<u>POST</u> -- Registration**
 **End Point**: ``/api/auth/register``
 
 **Requirements**:
@@ -107,7 +107,7 @@ Will return ID, email, and Token for immediate sign in.
         "email": "user@email.com",
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxlYnJvbkBlbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRvaVgxcFBMZjBRTi5lY1dTdzRNeFl1ajBTcmsyeFdCRUQ1UXdEOTNvdlVGdXk1OWg1dkNmVyIsImlhdCI6MTU5MjkyODg3MCwiZXhwIjoxNTkzNTMzNjcwfQ.Bq9vCniHMW_uBNJzxsJf273j-lRfv-4KyNP59aPa1Bg",
     }
-### **<u>POST</u> Login**
+### **<u>POST</u> -- Login**
 **End Point**: ``/api/auth/login``
 
 
@@ -123,7 +123,7 @@ Will return ID, email, and Token for immediate sign in.
         "message": "logged in!"
     }
 
-### **<u>GET</u> User by ID**
+### **<u>GET</u> -- User by ID**
 **End Point**: ``/api/auth/:id``
 
 **!Important**: Include the ``ID`` of existing user for ``:id``.
@@ -153,7 +153,7 @@ Will return ID, email, and Token for immediate sign in.
         }
     }
 
-### **<u>GET</u> All Users**
+### **<u>GET</u> -- All Users**
 **End Point**: ``/api/auth``
  
 *Example of Return Body:*
@@ -173,7 +173,7 @@ Will return a list of Users form the database.
         ]
     }
 
-### **<u>GET</u> Workout By ID**
+### **<u>GET</u> -- Workout By ID**
 **End Point**: ``/api/workouts/single/:id``
  
 
@@ -192,7 +192,7 @@ Will return a single workout from database.
         }
     ]
 
-### **<u>GET</u> List of Workouts for User**
+### **<u>GET</u> -- List of Workouts for User**
 **End Point**: ``/api/workouts/:id``
  
 
@@ -215,7 +215,7 @@ Will return a list of all workouts for a user.
             "date": "3/2/2020"
         }
     ]
-### **<u>POST</u> Adds a Workout for User**
+### **<u>POST</u> -- Adds a Workout for User**
 **End Point**: ``/api/workouts/:id``
  
 
@@ -237,7 +237,7 @@ Will return the ID of newly created workout.
         1
     ]
 
-### **<u>PUT</u> Edits a Workout**
+### **<u>PUT</u> -- Edits a Workout**
 **End Point**: ``/api/workouts/:id``
  
 
@@ -259,7 +259,7 @@ Will return the ID of newly created workout.
         "date": "1/12/2020"
     }
 
-### **<u>DELETE</u> Deletes a Workout**
+### **<u>DELETE</u> -- Deletes a Workout**
 **End Point**: ``/api/workouts/:id``
  
 
@@ -272,7 +272,7 @@ Returns a Success Message
         "message": "Successfully deleted 1"
     }
 
-### **<u>GET</u> Gets List of Exercises Under a Workout**
+### **<u>GET</u> -- Gets List of Exercises Under a Workout**
 **End Point**: ``/api/exercises/:id``
  
 
@@ -302,7 +302,7 @@ Will return a list of all exercises under a workout.
         "message": "Workout contains 1 exercises."
     }
 
-### **<u>POST</u> Adds an Exercise to a Workout**
+### **<u>POST</u> -- Adds an Exercise to a Workout**
 **End Point**: ``/api/exercises/:id``
  
 
@@ -355,7 +355,7 @@ Will return a list of all exercises under a workout, including your new exercise
             }
         ]
     }
-### **<u>PUT</u> Updates an Exercise to a Workout**
+### **<u>PUT</u> -- Updates an Exercise to a Workout**
 **End Point**: ``/api/:exercise_id/exercises/:id``
  
 
@@ -381,7 +381,7 @@ Will return a list of all exercises under a workout, including your new exercise
         1
     }
 
-### **<u>DELETE</u> Deletes an Exercise in a Workout**
+### **<u>DELETE</u> -- Deletes an Exercise in a Workout**
 **End Point**: ``/api/exercises/in_workout/:id ``
  
 
