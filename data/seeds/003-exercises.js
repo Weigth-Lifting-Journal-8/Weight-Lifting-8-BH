@@ -21,6 +21,6 @@ exports.seed = function(knex) {
           name: "EZ Curls",
           region: "Biceps"
         },
-      ]);
+      ], "id");
     });
 };
