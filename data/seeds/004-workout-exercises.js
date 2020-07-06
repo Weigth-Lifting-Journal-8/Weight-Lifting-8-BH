@@ -26,6 +26,6 @@ exports.seed = function(knex) {
           workout_id: 2,
           exercise_id: 2
         }
-      ]);
+      ], "id");
     });
 };

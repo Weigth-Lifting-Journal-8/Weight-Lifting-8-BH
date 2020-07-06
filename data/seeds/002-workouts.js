@@ -25,6 +25,6 @@ exports.seed = function(knex) {
           user_id: 2,
           date: new Date(2020, 7, 11)
         },
-      ]);
+      ], "id");
     });
 };
