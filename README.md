@@ -44,7 +44,7 @@ Give users the ability to monitor their progress at the gym. Users can create an
 
 
 
-### **Heroku Link**: https://weight-lifting-8.herokuapp.com
+### **Heroku Link**: https://weight-lifting-journal1.herokuapp.com/
 
 ## **Route Descriptions**
 Append ``End Points`` to the end of the ``HEROKU`` or ``LOCALHOST`` links above. 
