@@ -1,5 +1,5 @@
 
-exports.up = function(knex) {
+exports.up = async function(knex) {
   return knex.schema.createTable('workout_exercises', tbl => {
       tbl.increments();
 
