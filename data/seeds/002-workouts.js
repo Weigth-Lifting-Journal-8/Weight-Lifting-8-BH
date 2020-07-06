@@ -8,22 +8,22 @@ exports.seed = function(knex) {
         {
           name: "Shoulders",
           user_id: 1,
-          date: 3/12/2020
+          date: new Date(98, 1)
         },
         {
           name: "Legs",
           user_id: 1,
-          date: 3/20/2020
+          date: new Date(98, 1)
         },
         {
           name: "Arms",
           user_id: 2,
-          date: 3/12/2020
+          date: new Date(98, 1)
         },
         {
           name: "Chest",
           user_id: 2,
-          date: 3/12/2020
+          date: new Date(98, 1)
         },
       ]);
     });
