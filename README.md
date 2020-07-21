@@ -87,7 +87,7 @@ This document contains three main routers:
 |-----------------                 |:-----------------------:        |:-----------:|:----------:|
 | GET Workout Exercises            | /api/exercises/:id              | Required    | Data Obj |
 | POST Adds Exercise By Workout ID | /api/exercises/:id              | Required    |Complete Workout Obj|
-| PUT Edits Exercise               | /api/:exercise_id/exercises/:id | Required    | ID  |
+| PUT Edits Exercise               | /api/exercises/:exercise_id/workout/:id | Required    | ID  |
 | DELETE Deletes Exercises Workout | /api/exercises/in_workout/:id   | Required    |Success Message|
 
 
@@ -246,10 +246,11 @@ Will return the ID of newly created workout.
 1. If the ID's or names don't match it will create a new workout in its place. 
 
 *SEND A JSON OBJECT:*
-  {
-    "name": "Upper",
-    "date": "1/12/2020"
-  }
+  
+    {
+        "name": "Upper",
+        "date": "1/12/2020"
+    }
 
 
 *Example of Return Body:*
@@ -357,7 +358,7 @@ Will return a list of all exercises under a workout, including your new exercise
         ]
     }
 ### **<u>PUT</u> -- Updates an Exercise to a Workout**
-**End Point**: ``/api/:exercise_id/exercises/:id``
+**End Point**: ``/api/exercises/:exercise_id/workout/:id``
  
 
 **!Important**: 
