@@ -89,10 +89,17 @@ async function updateExercise(id, workout_id, exercise_data){
     const { name, region, sets, reps, weight } = exercise_data;
     // Get Workout Data 
     const exercise = await db('exercises')
-        .where({ name })
+        .where({ id })
         .first()
     // if exercise exists, update information on workout_exercises
     if(exercise){
+        await db('exercises')
+            .update({
+                name,
+                region
+            })
+            .where({ id: exercise.id })
+            .returning('id')
         return db('workout_exercises')
             .update({
                 reps, 
@@ -103,25 +110,6 @@ async function updateExercise(id, workout_id, exercise_data){
             })       
             .where({ id: id })
     } 
-    else {
-        // Create new exercise, extract id to use in w/e db.
-        const [ id ] = await db('exercises')
-            .insert({
-                name, 
-                region
-            })
-            .returning('id')
-
-        return db('workout_exercises')
-            .insert({
-                reps,
-                sets, 
-                weight,
-                workout_id,
-                exercise_id: id
-            })
-            .where({ id: id })
-    }
 }
 
 // Deletes Exercise only from Workout, NOT FROM EXISTENCE
