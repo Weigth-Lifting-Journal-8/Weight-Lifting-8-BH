@@ -60,14 +60,11 @@ router.post('/:id', validateUser, validateWorkoutID, (req, res) => {
 router.put('/:exercise_id/workout/:workout_id', validateExerciseID, (req, res) => {
     const new_data = req.body;
     const { exercise_id, workout_id } = req.params;
-    console.log(new_data, exercise_id, workout_id)
     ExModel.updateExercise(exercise_id, workout_id, new_data)
         .then(data => {
-            console.log('UPDATE', data)
             res.status(201).json(data)
         })
         .catch(err => {
-            console.log("ERROR")
             res.status(500).json({ message: "Server could not update exercise."})
         })
 })

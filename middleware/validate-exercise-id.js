@@ -1,7 +1,6 @@
 const ExModel = require('../models/exercise-model.js');
 // Validate Exercise ID
 module.exports = (req, res, next) => {
-  console.log("VALIDATE EXERCISE", req.params.exercise_id)
   ExModel.findExById(req.params.exercise_id)
     .then(workout => {
       if(workout){
