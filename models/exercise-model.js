@@ -92,6 +92,7 @@ async function updateExercise(id, workout_id, exercise_data){
         .first()
     // if exercise exists, update information on workout_exercises
     if(exercise){
+        console.log("UPDATE EXERCISE", exercise)
         await db('exercises')
             .update({
                 name,
@@ -107,7 +108,7 @@ async function updateExercise(id, workout_id, exercise_data){
                 workout_id,
                 exercise_id: exercise.id
             })       
-            .where({ id: id })
+            .where({ id: exercise.id })
     } 
 }
 
