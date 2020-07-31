@@ -92,6 +92,7 @@ async function updateExercise(id, workout_id, exercise_data){
         .first()
     // if exercise exists, update information on workout_exercises
     if(exercise){
+        console.log("UPDATE EXERCISE", exercise)
         await db('exercises')
             .update({
                 name,
@@ -107,13 +108,13 @@ async function updateExercise(id, workout_id, exercise_data){
                 workout_id,
                 exercise_id: exercise.id
             })       
-            .where({ id: id })
+            .where({ id: exercise.id })
     } 
 }
 
 // Deletes Exercise only from Workout, NOT FROM EXISTENCE
 function remove(id){
-    return db('workout_exercises')
+    return db('exercises')
         .where({ id })
         .first()
         .del()
