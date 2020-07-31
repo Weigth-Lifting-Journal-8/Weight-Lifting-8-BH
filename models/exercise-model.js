@@ -48,21 +48,21 @@ async function findById(workout_id){
 // Adds Exercise To A Workout
 async function addExercise(exerciseInfo, workout_id){
     // Get exercise data
-    const exercise = await db('exercises')
-        .where({ name: exerciseInfo.name })
-        .first()
-    // if it exists, add to workout/exercises
-    if(exercise){
-        await db('workout_exercises')
-            .insert({
-                reps: exerciseInfo.reps,
-                sets: exerciseInfo.sets,
-                weight: exerciseInfo.weight,
-                workout_id: workout_id,
-                exercise_id: exercise.id
-            })
-            .returning('id')
-    } else {
+    // const exercise = await db('exercises')
+    //     .where({ name: exerciseInfo.name })
+    //     .first()
+    // // if it exists, add to workout/exercises
+    // if(exercise){
+    //     await db('workout_exercises')
+    //         .insert({
+    //             reps: exerciseInfo.reps,
+    //             sets: exerciseInfo.sets,
+    //             weight: exerciseInfo.weight,
+    //             workout_id: workout_id,
+    //             exercise_id: exercise.id
+    //         })
+    //         .returning('id')
+    // } else {
         // Add to exercise db, then w/e
         const [ id ] = await db('exercises')
             .insert({
@@ -80,7 +80,7 @@ async function addExercise(exerciseInfo, workout_id){
                 exercise_id: id
             })
             .returning('id')
-    }
+    // }
     return await findById(workout_id)
 }
 // Edit a single exercise

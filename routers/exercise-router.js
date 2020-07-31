@@ -17,7 +17,6 @@ router.get('/:id', validateWorkoutID, (req, res) => {
     ExModel.findById(id)
         .then(data => {
             message = !data.exercises.length ? 'This workout is empty.' : `Workout contains ${data.exercises.length} exercises.`;
-
             res.status(200).json({data, message})
         })
         .catch(err => {
