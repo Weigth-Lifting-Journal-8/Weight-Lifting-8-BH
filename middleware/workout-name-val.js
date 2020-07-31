@@ -1,7 +1,6 @@
 const Workout = require('../models/workout-model.js');
 // Verifies Workout By Name ---> Not used (6/23)
 module.exports = (req, res, next) => {
-  console.log("PARAMS WORKOUT", req.params.workout)
   Workout.workoutName(req.params.workout)
     .then(workout => {
       if(workout){

@@ -51,8 +51,8 @@ async function getUserById(id){
     // User exists, return all workouts for that user
     if(user) {
         workouts = await db('workouts as w')
-            .leftJoin('workout_exercises as we', 'we.workout_id', 'w.id')
-            .leftJoin('exercises as e', 'we.exercise_id', 'e.id')
+            .leftJoin('exercises as e', 'w.id', 'e.workout_id')
+            // .leftJoin('workout_exercises as we', 'we.workout_id', 'w.id')
             .select('w.id', 'w.name')
             .where({ user_id: id })
             .groupBy('w.id')

@@ -27,7 +27,6 @@ describe('WORKOUT-ROUTER', () => {
                     "workout_name": "Legs"
                 })
                 .then(res => {
-                    console.log(res.body)
                     expect(res.status).toBe(201)
                 })
         })
@@ -38,7 +37,6 @@ describe('WORKOUT-ROUTER', () => {
                 .get('/api/workouts/1/all')
                 .set('Authorization', `${token}`)
                 .then(res => {
-                    console.log(res.status)
                     expect(res.status).toBe(200);
                 })
         })
