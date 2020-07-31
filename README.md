@@ -291,7 +291,6 @@ Will return a list of all exercises under a workout.
             "workout_name": "Leg Day",
             "exercises": [
             {
-                "user_exercise_id": 14,
                 "exercise_id": 6,
                 "exercise_name": "Squat",
                 "region": "Full-Body",
@@ -329,7 +328,6 @@ Will return a list of all exercises under a workout, including your new exercise
         "workout_name": "Leg Day",
         "exercises": [
             {
-            "user_exercise_id": 14,
             "exercise_id": 6,
             "exercise_name": "Squat",
             "region": "Full-Body",
@@ -338,7 +336,6 @@ Will return a list of all exercises under a workout, including your new exercise
             "weight": 225
             },
             {
-            "user_exercise_id": 15,
             "exercise_id": 7,
             "exercise_name": "Lunges",
             "region": "Quads",
@@ -347,7 +344,6 @@ Will return a list of all exercises under a workout, including your new exercise
             "weight": 1
             },
             {
-            "user_exercise_id": 17,
             "exercise_id": 9,
             "exercise_name": "Leg Extension",
             "region": "Quads",
