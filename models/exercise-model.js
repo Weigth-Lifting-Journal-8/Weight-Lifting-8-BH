@@ -113,7 +113,7 @@ async function updateExercise(id, workout_id, exercise_data){
 
 // Deletes Exercise only from Workout, NOT FROM EXISTENCE
 function remove(id){
-    return db('workout_exercises')
+    return db('exercises')
         .where({ id })
         .first()
         .del()
