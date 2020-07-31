@@ -29,7 +29,6 @@ async function findById(workout_id){
             .join('workouts as w', 'we.workout_id', 'w.id')
             .join('exercises as e', 'we.exercise_id', 'e.id')
             .select(
-                'we.id as user_exercise_id',
                 'e.id as exercise_id',
                 'e.name as exercise_name',
                 'e.region',
