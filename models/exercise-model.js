@@ -17,27 +17,22 @@ function findExById(id){
 //Find Workout ID and return all exercises associated
 async function findById(workout_id){
     const weights = await db(`workouts as w`)
-        .select(
-            'w.id as workout_id',
-            'w.name as workout_name'
-            )
+        .select('w.id as workout_id','w.name as workout_name')
         .where({ id: workout_id })
         .first()
     // Find exercises associated with that workout
     if(weights){
-        const exercises = await db('workout_exercises as we')
-            .join('workouts as w', 'we.workout_id', 'w.id')
-            .join('exercises as e', 'we.exercise_id', 'e.id')
+        const exercises = await db('exercises as e')
+            .join('workouts as w', 'e.workout_id', 'w.id')
             .select(
                 'e.id as exercise_id',
-                'e.name as exercise_name',
+                'e.exercise',
                 'e.region',
-                'we.sets',
-                'we.reps',
-                'we.weight'
+                'e.sets',
+                'e.reps',
+                'e.weight'
             )
             .where({ workout_id })
-        // object w/workout and list of exercises
         return {
             ...weights,
             exercises: exercises,
@@ -46,69 +41,35 @@ async function findById(workout_id){
     return weights
 }
 // Adds Exercise To A Workout
-async function addExercise(exerciseInfo, workout_id){
-    // Get exercise data
-    // const exercise = await db('exercises')
-    //     .where({ name: exerciseInfo.name })
-    //     .first()
-    // // if it exists, add to workout/exercises
-    // if(exercise){
-    //     await db('workout_exercises')
-    //         .insert({
-    //             reps: exerciseInfo.reps,
-    //             sets: exerciseInfo.sets,
-    //             weight: exerciseInfo.weight,
-    //             workout_id: workout_id,
-    //             exercise_id: exercise.id
-    //         })
-    //         .returning('id')
-    // } else {
-        // Add to exercise db, then w/e
-        const [ id ] = await db('exercises')
-            .insert({
-                name: exerciseInfo.name,
-                region: exerciseInfo.region
-            })
-            .returning('id');
-
-        await db('workout_exercises')
-            .insert({
-                reps: exerciseInfo.reps,
-                sets: exerciseInfo.sets,
-                weight: exerciseInfo.weight,
-                workout_id: workout_id,
-                exercise_id: id
-            })
-            .returning('id')
-    // }
-    return await findById(workout_id)
+function addExercise(exerciseInfo){
+    return db('exercises')
+        .insert(exerciseInfo, "id")
+        .then(ids => {
+            const [ id ] = ids;
+            return findExById(id) 
+        })
 }
+
 // Edit a single exercise
-async function updateExercise(id, workout_id, exercise_data){
-    const { name, region, sets, reps, weight } = exercise_data;
+async function updateExercise(id, exercise_data){
+    const { exercise, region, sets, reps, weight } = exercise_data;
     // Get Workout Data 
-    const exercise = await db('exercises')
+    const curr_exercise = await db('exercises')
         .where({ id })
         .first()
     // if exercise exists, update information on workout_exercises
-    if(exercise){
-        console.log("UPDATE EXERCISE", exercise)
-        await db('exercises')
+    if(curr_exercise){
+       const new_exercise = await db('exercises')
             .update({
-                name,
-                region
-            })
-            .where({ id: exercise.id })
-            .returning('id')
-        return db('workout_exercises')
-            .update({
+                exercise,
+                region,
                 reps, 
                 sets, 
                 weight, 
-                workout_id,
-                exercise_id: exercise.id
-            })       
-            .where({ id: exercise.id })
+            })
+            .where({ id })
+            .returning('id')
+            return new_exercise;
     } 
 }
 

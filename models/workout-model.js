@@ -7,13 +7,6 @@ module.exports = {
     update,
     remove,
 }
-// Finds Workout By Name --> used for exercise middleware
-// function workoutName(name){
-//   return db('workouts as w')
-//     .select('w.id', 'w.name', 'w.date')
-//     .where('w.name', name)
-//     .first()
-// }
 
 // FINDS ALL USER WORKOUTS
 function findWorkout(userId){

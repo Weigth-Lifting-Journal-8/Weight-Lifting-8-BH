@@ -24,8 +24,6 @@ router.get('/:id', validateWorkoutID, (req, res) => {
             res.status(500).json({ message: "There was a problem connecting to workout and exercise."})
         })
 })
-
-
 // POSTS EXERCISE UNDER WORKOUT
 router.post('/:id', validateUser, validateWorkoutID, (req, res) => {
     const newExercise = req.body;
@@ -33,7 +31,7 @@ router.post('/:id', validateUser, validateWorkoutID, (req, res) => {
 
     const validationResult = validateExercise(newExercise);
     if(validationResult.isSuccesful){
-        ExModel.addExercise(newExercise, id)
+        ExModel.addExercise({...newExercise, workout_id: id})
             .then(workout => {
                 res.status(201).json(workout)
             })

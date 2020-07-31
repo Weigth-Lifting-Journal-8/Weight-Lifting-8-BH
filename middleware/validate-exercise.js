@@ -1,7 +1,7 @@
 module.exports = (exercise) => {
   const errors = []
 
-  if(!exercise.name){
+  if(!exercise.exercise){
     errors.push("Please provide name for exercise.")
   }
   if(!exercise.region){

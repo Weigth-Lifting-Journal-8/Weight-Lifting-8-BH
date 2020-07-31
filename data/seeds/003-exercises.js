@@ -6,20 +6,44 @@ exports.seed = function(knex) {
       // Inserts seed entries
       return knex('exercises').insert([
         {
-          name: "Pull-Ups",
-          region: "Upper-Body"
+          exercise: "Pull-Ups",
+          region: "Upper-Body",
+          sets: 5,
+          reps: 5,
+          weight: 225,
+          workout_id: 1
         },
         {
-          name: "Squat",
-          region: "Legs"
+          exercise: "Squat",
+          region: "Legs",
+          sets: 5,
+          reps: 5,
+          weight: 300,
+          workout_id: 2
         },
         {
-          name: "Bench",
-          region: "Chest"
+          exercise: "DB Fly's",
+          region: "Chest",
+          sets: 3,
+          reps: 5,
+          weight: 225,
+          workout_id: 4
         },
         {
-          name: "EZ Curls",
-          region: "Biceps"
+          exercise: "Bench",
+          region: "Chest",
+          sets: 3,
+          reps: 5,
+          weight: 225,
+          workout_id: 4
+        },
+        {
+          exercise: "EZ Curls",
+          region: "Biceps",
+          sets: 3,
+          reps: 10,
+          weight: 60,
+          workout_id: 3
         },
       ], "id");
     });
