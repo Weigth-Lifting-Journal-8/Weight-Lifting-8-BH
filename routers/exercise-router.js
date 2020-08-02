@@ -57,7 +57,7 @@ router.post('/:id', validateUser, validateWorkoutID, (req, res) => {
 router.put('/:exercise_id/workout/:workout_id', validateExerciseID, (req, res) => {
     const new_data = req.body;
     const { exercise_id, workout_id } = req.params;
-    ExModel.updateExercise(exercise_id, workout_id, new_data)
+    ExModel.updateExercise(exercise_id, new_data)
         .then(data => {
             res.status(201).json(data)
         })
