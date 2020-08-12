@@ -30,11 +30,9 @@ router.get('/single/:id', validateWorkoutID, (req, res) => {
 
 
 // Adds workout for User
-router.post('/:id', validateUser, validateWorkout, (req, res) => {
+router.post('/:id', validateUser, (req, res) => {
     const workout_data = req.body;
     const { id } = req.params;
-
-    console.log(workout_data)
 
     if(!workout_data.name){
         return res.status(400).json({ message: "Please provide a name for this workout."})
