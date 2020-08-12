@@ -7,6 +7,8 @@ exports.up = function(knex) {
         .notNullable();
     
       tbl.date('date');
+
+      tbl.boolean('completed')
     
       tbl.integer('user_id')
         .unsigned()

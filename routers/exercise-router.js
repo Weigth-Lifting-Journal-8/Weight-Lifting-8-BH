@@ -7,8 +7,6 @@ const validateWorkoutID = require('../middleware/validate-workout-id.js');
 const validateExercise = require('../middleware/validate-exercise');
 const validateExerciseID = require('../middleware/validate-exercise-id.js');
 
-// Get a single exercise under a workout
-
 // Get all exercises under a workout
 router.get('/:id', validateWorkoutID, (req, res) => {
     const { id } = req.params;
